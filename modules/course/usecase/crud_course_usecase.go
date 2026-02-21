@@ -82,7 +82,7 @@ func (u *courseUsecase) Update(ctx context.Context, id string, req *dto.ReqUpdat
 		return nil, err
 	}
 
-	c, err := u.repo.Update(ctx, cid, req.Title, req.Description, req.ShortDescription, req.Price, req.DiscountRate, req.ThumbnailURL)
+	c, err := u.repo.Update(ctx, cid, req.Title, req.Description, req.ShortDescription, req.Price, req.DiscountRate, req.ThumbnailURL, req.RemoveThumbnail)
 	if err != nil {
 		return nil, err
 	}

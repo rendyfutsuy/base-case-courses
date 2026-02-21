@@ -8,26 +8,27 @@ import (
 )
 
 type ReqCreateCourse struct {
-	Title            string    `json:"title" validate:"required,max=255"`
-	Description      string    `json:"description" validate:"required"`
-	ShortDescription string    `json:"short_description" validate:"required,max=255"`
-	Price            float64   `json:"price" validate:"required"`
-	DiscountRate     float64   `json:"discount_rate" validate:"required"`
-	ThumbnailURL     *string   `json:"thumbnail_url,omitempty"`
-	LevelID          uuid.UUID `json:"level_id"`
-	LangID           uuid.UUID `json:"lang_id"`
+	Title            string      `json:"title" validate:"required,max=255"`
+	Description      string      `json:"description" validate:"required"`
+	ShortDescription string      `json:"short_description" validate:"required,max=255"`
+	Price            float64     `json:"price" validate:"required"`
+	DiscountRate     float64     `json:"discount_rate" validate:"required"`
+	ThumbnailURL     *string     `json:"thumbnail_url,omitempty"`
+	LevelID          uuid.UUID   `json:"level_id"`
+	LangID           uuid.UUID   `json:"lang_id"`
 	TopicIDs         []uuid.UUID `json:"topic_ids"`
 }
 
 type ReqUpdateCourse struct {
-	Title            string    `json:"title" validate:"required,max=255"`
-	Description      string    `json:"description" validate:"required"`
-	ShortDescription string    `json:"short_description" validate:"required,max=255"`
-	Price            float64   `json:"price" validate:"required"`
-	DiscountRate     float64   `json:"discount_rate" validate:"required"`
-	ThumbnailURL     *string   `json:"thumbnail_url,omitempty"`
-	LevelID          uuid.UUID `json:"level_id"`
-	LangID           uuid.UUID `json:"lang_id"`
+	Title            string      `json:"title" validate:"required,max=255"`
+	Description      string      `json:"description" validate:"required"`
+	ShortDescription string      `json:"short_description" validate:"required,max=255"`
+	Price            float64     `json:"price" validate:"required"`
+	DiscountRate     float64     `json:"discount_rate" validate:"required"`
+	ThumbnailURL     *string     `json:"thumbnail_url,omitempty"`
+	RemoveThumbnail  bool        `json:"remove_thumbnail" form:"remove_thumbnail"`
+	LevelID          uuid.UUID   `json:"level_id"`
+	LangID           uuid.UUID   `json:"lang_id"`
 	TopicIDs         []uuid.UUID `json:"topic_ids"`
 }
 

@@ -40,7 +40,7 @@ func (r *courseRepository) Create(ctx context.Context, createdBy uuid.UUID, titl
 	return c, nil
 }
 
-func (r *courseRepository) Update(ctx context.Context, id uuid.UUID, title, description, shortDescription string, price, discountRate float64, thumbnailURL *string) (*models.Course, error) {
+func (r *courseRepository) Update(ctx context.Context, id uuid.UUID, title, description, shortDescription string, price, discountRate float64, thumbnailURL *string, removeThumbnail bool) (*models.Course, error) {
 	updates := map[string]interface{}{
 		"title":             title,
 		"description":       description,
@@ -49,9 +49,13 @@ func (r *courseRepository) Update(ctx context.Context, id uuid.UUID, title, desc
 		"discount_rate":     discountRate,
 		"updated_at":        time.Now().UTC(),
 	}
+	// Update thumbnail_url only when requested:
+	// - set to provided URL if thumbnailURL != nil
+	// - set to NULL if removeThumbnail == true
+	// - otherwise, do not modify thumbnail_url
 	if thumbnailURL != nil {
 		updates["thumbnail_url"] = *thumbnailURL
-	} else {
+	} else if removeThumbnail {
 		updates["thumbnail_url"] = nil
 	}
 	c := &models.Course{}

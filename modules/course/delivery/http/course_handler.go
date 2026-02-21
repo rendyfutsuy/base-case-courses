@@ -2,6 +2,8 @@ package http
 
 import (
 	"net/http"
+	"bytes"
+	"io"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -12,6 +14,7 @@ import (
 	"github.com/rendyfutsuy/base-go/models"
 	"github.com/rendyfutsuy/base-go/modules/course"
 	"github.com/rendyfutsuy/base-go/modules/course/dto"
+	utilsServices "github.com/rendyfutsuy/base-go/utils/services"
 )
 
 type CourseHandler struct {
@@ -53,6 +56,8 @@ func (h *CourseHandler) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, err.Error()))
 	}
 
+	thumbnailFile, _ := c.FormFile("thumbnail")
+
 	var userID string
 	if user := c.Get("user"); user != nil {
 		if u, ok := user.(models.User); ok {
@@ -63,6 +68,43 @@ func (h *CourseHandler) Create(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, err.Error()))
 	}
+
+	// If thumbnail file is provided, upload and update course with URL
+	if thumbnailFile != nil {
+		src, err := thumbnailFile.Open()
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, err.Error()))
+		}
+		defer src.Close()
+		fileData, err := io.ReadAll(src)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, err.Error()))
+		}
+		var buf bytes.Buffer
+		buf.Write(fileData)
+		destinatedPath := "courses/thumbnails/" + res.ID.String()
+		url, err := utilsServices.UploadFile(buf, thumbnailFile.Filename, destinatedPath)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, "Failed to upload thumbnail file"))
+		}
+		// Update course with uploaded thumbnail URL
+		updateReq := &dto.ReqUpdateCourse{
+			Title:            res.Title,
+			Description:      res.Description,
+			ShortDescription: res.ShortDescription,
+			Price:            res.Price,
+			DiscountRate:     res.DiscountRate,
+			ThumbnailURL:     &url,
+			LevelID:          req.LevelID,
+			LangID:           req.LangID,
+			TopicIDs:         req.TopicIDs,
+		}
+		res, err = h.Usecase.Update(ctx, res.ID.String(), updateReq, userID)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, err.Error()))
+		}
+	}
+
 	resp := response.NonPaginationResponse{}
 	resp, _ = resp.SetResponse(dto.ToRespCourse(*res))
 	return c.JSON(http.StatusOK, resp)
@@ -78,6 +120,28 @@ func (h *CourseHandler) Update(c echo.Context) error {
 	}
 	if err := c.Validate(req); err != nil {
 		return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, err.Error()))
+	}
+
+	thumbnailFile, _ := c.FormFile("thumbnail")
+	// If file provided, upload and set req.ThumbnailURL using same flow as avatar upload
+	if thumbnailFile != nil {
+		src, err := thumbnailFile.Open()
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, err.Error()))
+		}
+		defer src.Close()
+		fileData, err := io.ReadAll(src)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, err.Error()))
+		}
+		var buf bytes.Buffer
+		buf.Write(fileData)
+		destinatedPath := "courses/thumbnails/" + id
+		url, err := utilsServices.UploadFile(buf, thumbnailFile.Filename, destinatedPath)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, "Failed to upload thumbnail file"))
+		}
+		req.ThumbnailURL = &url
 	}
 
 	var userID string

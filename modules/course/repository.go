@@ -11,7 +11,7 @@ import (
 
 type Repository interface {
 	Create(ctx context.Context, createdBy uuid.UUID, title, description, shortDescription string, price, discountRate float64, thumbnailURL *string) (*models.Course, error)
-	Update(ctx context.Context, id uuid.UUID, title, description, shortDescription string, price, discountRate float64, thumbnailURL *string) (*models.Course, error)
+	Update(ctx context.Context, id uuid.UUID, title, description, shortDescription string, price, discountRate float64, thumbnailURL *string, removeThumbnail bool) (*models.Course, error)
 	Delete(ctx context.Context, id uuid.UUID) error
 	GetByID(ctx context.Context, id uuid.UUID) (*models.Course, error)
 	GetIndex(ctx context.Context, req request.PageRequest, filter dto.ReqCourseIndexFilter) ([]models.Course, int, error)
