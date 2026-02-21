@@ -1,4 +1,4 @@
-# Base Template Go - REST API Backend
+# REST API Backend
 
 Template aplikasi backend REST API yang dibuat menggunakan Go (Golang), Echo Framework, dan GORM. Base template ini menyediakan struktur aplikasi yang siap digunakan untuk pengembangan aplikasi web modern dengan fitur autentikasi, manajemen user, dan manajemen role yang lengkap.
 
