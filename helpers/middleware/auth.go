@@ -10,10 +10,10 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuy/base-go/helpers/response"
-	"github.com/rendyfutsuy/base-go/models"
-	"github.com/rendyfutsuy/base-go/utils"
-	"github.com/rendyfutsuy/base-go/utils/token_storage"
+	"github.com/rendyfutsuybase-case-courses/helpers/response"
+	"github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
 )
 
 type GeneralResponse struct {

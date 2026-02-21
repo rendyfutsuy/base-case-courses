@@ -8,12 +8,12 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/lib/pq"
-	"github.com/rendyfutsuy/base-go/constants"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/models"
-	rsearchpg "github.com/rendyfutsuy/base-go/modules/role_management/repository/searches"
-	"github.com/rendyfutsuy/base-go/modules/role_management/repository/sorts"
-	"github.com/rendyfutsuy/base-go/utils"
+	"github.com/rendyfutsuybase-case-courses/constants"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/models"
+	rsearchpg "github.com/rendyfutsuybase-case-courses/modules/role_management/repository/searches"
+	"github.com/rendyfutsuybase-case-courses/modules/role_management/repository/sorts"
+	"github.com/rendyfutsuybase-case-courses/utils"
 	"gorm.io/gorm"
 )
 

@@ -5,7 +5,7 @@ import (
 	"context"
 
 	"github.com/redis/go-redis/v9"
-	"github.com/rendyfutsuy/base-go/utils"
+	"github.com/rendyfutsuybase-case-courses/utils"
 	"go.uber.org/zap"
 )
 

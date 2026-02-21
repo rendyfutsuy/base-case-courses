@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	models "github.com/rendyfutsuy/base-go/models"
-	"github.com/rendyfutsuy/base-go/modules/user_management/dto"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	models "github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuybase-case-courses/modules/user_management/dto"
 )
 
 type Usecase interface {

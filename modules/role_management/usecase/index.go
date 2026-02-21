@@ -3,8 +3,8 @@ package usecase
 import (
 	"time"
 
-	"github.com/rendyfutsuy/base-go/modules/auth"
-	"github.com/rendyfutsuy/base-go/modules/role_management"
+	"github.com/rendyfutsuybase-case-courses/modules/auth"
+	"github.com/rendyfutsuybase-case-courses/modules/role_management"
 )
 
 type roleUsecase struct {

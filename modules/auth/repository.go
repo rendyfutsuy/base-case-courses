@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	models "github.com/rendyfutsuy/base-go/models"
-	"github.com/rendyfutsuy/base-go/modules/auth/dto"
+	models "github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuybase-case-courses/modules/auth/dto"
 )
 
 // Repository represent the auth's repository contract

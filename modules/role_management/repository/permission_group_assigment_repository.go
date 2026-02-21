@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/constants"
+	"github.com/rendyfutsuybase-case-courses/constants"
 )
 
 func (repo *roleRepository) ReAssignPermissionsToPermissionGroup(ctx context.Context, id uuid.UUID, permissions []uuid.UUID) error {

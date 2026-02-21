@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/lib/pq"
-	"github.com/rendyfutsuy/base-go/constants"
+	"github.com/rendyfutsuybase-case-courses/constants"
 )
 
 func HumanizePQError(err error) error {

@@ -11,10 +11,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/models"
-	parameterDto "github.com/rendyfutsuy/base-go/modules/parameter/dto"
-	"github.com/rendyfutsuy/base-go/modules/parameter/usecase"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/models"
+	parameterDto "github.com/rendyfutsuybase-case-courses/modules/parameter/dto"
+	"github.com/rendyfutsuybase-case-courses/modules/parameter/usecase"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -82,6 +82,17 @@ func (m *MockParameterRepository) ExistsByCode(ctx context.Context, code string,
 func (m *MockParameterRepository) ExistsByName(ctx context.Context, name string, excludeID uuid.UUID) (bool, error) {
 	args := m.Called(ctx, name, excludeID)
 	return args.Bool(0), args.Error(1)
+}
+func (m *MockParameterRepository) AssignParametersToModule(ctx context.Context, moduleType string, moduleID uuid.UUID, parameterIDs []uuid.UUID) error {
+	args := m.Called(ctx, moduleType, moduleID, parameterIDs)
+	return args.Error(0)
+}
+func (m *MockParameterRepository) GetByModule(ctx context.Context, moduleType string, moduleID uuid.UUID) ([]models.Parameter, error) {
+	args := m.Called(ctx, moduleType, moduleID)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).([]models.Parameter), args.Error(1)
 }
 
 func TestCreateParameter(t *testing.T) {

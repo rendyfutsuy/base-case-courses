@@ -6,13 +6,14 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/rendyfutsuy/base-go/utils/services/storage"
+	"github.com/rendyfutsuybase-case-courses/utils/services/storage"
 	"go.uber.org/zap"
 )
 
 const (
 	AWS   = "s3"
 	MINIO = "minio"
+	LOCAL = "local"
 )
 
 var (
@@ -34,6 +35,8 @@ func GetStorage(driver string) (storage.Storage, error) {
 		return storage.NewS3Storage()
 	case MINIO:
 		return storage.NewMinIOStorage()
+	case LOCAL:
+		return storage.NewLocalStorage()
 	default:
 		zap.S().Errorf("unsupported file driver: %s", driver)
 		return nil, fmt.Errorf("unsupported file driver: %s", driver)

@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 
-	"github.com/rendyfutsuy/base-go/utils"
-	"github.com/rendyfutsuy/base-go/utils/token_storage"
+	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
 )
 
 func (u *authUsecase) SignOut(ctx context.Context, token string) error {

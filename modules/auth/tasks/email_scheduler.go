@@ -6,8 +6,8 @@ import (
 
 	"github.com/hibiken/asynq"
 	"github.com/newrelic/go-agent/v3/newrelic"
-	"github.com/rendyfutsuy/base-go/utils"
-	"github.com/rendyfutsuy/base-go/utils/services"
+	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuybase-case-courses/utils/services"
 )
 
 // RunEmailScheduler initializes Asynq server and registers all email-related handlers.

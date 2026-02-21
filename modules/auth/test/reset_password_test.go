@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	models "github.com/rendyfutsuy/base-go/models"
-	"github.com/rendyfutsuy/base-go/modules/auth/usecase"
-	"github.com/rendyfutsuy/base-go/utils/token_storage"
+	models "github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuybase-case-courses/modules/auth/usecase"
+	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"golang.org/x/crypto/bcrypt"

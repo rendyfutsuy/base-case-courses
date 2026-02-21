@@ -11,7 +11,7 @@ import (
 	"slices"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/rendyfutsuy/base-go/constants"
+	"github.com/rendyfutsuybase-case-courses/constants"
 )
 
 type CustomValidator struct {

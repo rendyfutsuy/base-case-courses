@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/rendyfutsuy/base-go/modules/auth/tasks"
+	"github.com/rendyfutsuybase-case-courses/modules/auth/tasks"
 )
 
 func main() {

@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rendyfutsuy/base-go/modules/auth/usecase"
-	"github.com/rendyfutsuy/base-go/utils/token_storage"
+	"github.com/rendyfutsuybase-case-courses/modules/auth/usecase"
+	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
 	"github.com/stretchr/testify/assert"
 )
 

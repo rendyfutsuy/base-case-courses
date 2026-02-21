@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"github.com/rendyfutsuy/base-go/models"
+	"github.com/rendyfutsuybase-case-courses/models"
 )
 
 type RespPermissionGroupByModule struct {
