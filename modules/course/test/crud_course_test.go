@@ -1,0 +1,158 @@
+package test
+
+import (
+	"context"
+	"testing"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/rendyfutsuy/base-go/helpers/request"
+	"github.com/rendyfutsuy/base-go/models"
+	courseDto "github.com/rendyfutsuy/base-go/modules/course/dto"
+	courseUsecase "github.com/rendyfutsuy/base-go/modules/course/usecase"
+	paramDto "github.com/rendyfutsuy/base-go/modules/parameter/dto"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+)
+
+type MockCourseRepository struct {
+	mock.Mock
+}
+
+func (m *MockCourseRepository) Create(ctx context.Context, createdBy uuid.UUID, title, description, shortDescription string, price, discountRate float64, thumbnailURL *string) (*models.Course, error) {
+	args := m.Called(ctx, createdBy, title, description, shortDescription, price, discountRate, thumbnailURL)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*models.Course), args.Error(1)
+}
+func (m *MockCourseRepository) Update(ctx context.Context, id uuid.UUID, title, description, shortDescription string, price, discountRate float64, thumbnailURL *string) (*models.Course, error) {
+	args := m.Called(ctx, id, title, description, shortDescription, price, discountRate, thumbnailURL)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*models.Course), args.Error(1)
+}
+func (m *MockCourseRepository) Delete(ctx context.Context, id uuid.UUID) error {
+	args := m.Called(ctx, id)
+	return args.Error(0)
+}
+func (m *MockCourseRepository) GetByID(ctx context.Context, id uuid.UUID) (*models.Course, error) {
+	args := m.Called(ctx, id)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*models.Course), args.Error(1)
+}
+func (m *MockCourseRepository) GetIndex(ctx context.Context, req request.PageRequest, filter courseDto.ReqCourseIndexFilter) ([]models.Course, int, error) {
+	args := m.Called(ctx, req, filter)
+	if args.Get(0) == nil {
+		return nil, 0, args.Error(2)
+	}
+	return args.Get(0).([]models.Course), args.Int(1), args.Error(2)
+}
+func (m *MockCourseRepository) GetAll(ctx context.Context, filter courseDto.ReqCourseIndexFilter) ([]models.Course, error) {
+	args := m.Called(ctx, filter)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).([]models.Course), args.Error(1)
+}
+
+type MockParameterRepository struct {
+	mock.Mock
+}
+
+func (m *MockParameterRepository) Create(ctx context.Context, code, name string, value, typeVal, desc *string) (*models.Parameter, error) {
+	panic("not implemented")
+}
+func (m *MockParameterRepository) Update(ctx context.Context, id uuid.UUID, code, name string, value, typeVal, desc *string) (*models.Parameter, error) {
+	panic("not implemented")
+}
+func (m *MockParameterRepository) SetParent(ctx context.Context, id uuid.UUID, parentID uuid.UUID) error {
+	panic("not implemented")
+}
+func (m *MockParameterRepository) Delete(ctx context.Context, id uuid.UUID) error {
+	panic("not implemented")
+}
+func (m *MockParameterRepository) GetByID(ctx context.Context, id uuid.UUID) (*models.Parameter, error) {
+	args := m.Called(ctx, id)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*models.Parameter), args.Error(1)
+}
+func (m *MockParameterRepository) GetIndex(ctx context.Context, req request.PageRequest, filter paramDto.ReqParameterIndexFilter) ([]models.Parameter, int, error) {
+	panic("not implemented")
+}
+func (m *MockParameterRepository) GetAll(ctx context.Context, filter paramDto.ReqParameterIndexFilter) ([]models.Parameter, error) {
+	panic("not implemented")
+}
+func (m *MockParameterRepository) ExistsByCode(ctx context.Context, code string, excludeID uuid.UUID) (bool, error) {
+	panic("not implemented")
+}
+func (m *MockParameterRepository) ExistsByName(ctx context.Context, name string, excludeID uuid.UUID) (bool, error) {
+	panic("not implemented")
+}
+func (m *MockParameterRepository) AssignParametersToModule(ctx context.Context, moduleType string, moduleID uuid.UUID, parameterIDs []uuid.UUID) error {
+	args := m.Called(ctx, moduleType, moduleID, parameterIDs)
+	return args.Error(0)
+}
+
+func TestCourseUsecase_Create_TypeValidation(t *testing.T) {
+	ctx := context.Background()
+	mockCourseRepo := new(MockCourseRepository)
+	mockParamRepo := new(MockParameterRepository)
+	useCase := courseUsecase.NewCourseUsecase(mockCourseRepo, mockParamRepo)
+
+	levelID := uuid.New()
+	langID := uuid.New()
+	topicID := uuid.New()
+
+	// invalid level (not course_level)
+	mockParamRepo.On("GetByID", ctx, levelID).Return(&models.Parameter{ID: levelID, Type: ptrStr("lang")}, nil).Once()
+	req := &courseDto.ReqCreateCourse{
+		Title:            "A",
+		Description:      "B",
+		ShortDescription: "C",
+		Price:            100,
+		DiscountRate:     10,
+		LevelID:          levelID,
+		LangID:           langID,
+		TopicIDs:         []uuid.UUID{topicID},
+	}
+	_, err := useCase.Create(ctx, req, "")
+	assert.Error(t, err)
+
+	// valid types then success
+	mockParamRepo.ExpectedCalls = nil
+	mockCourseRepo.ExpectedCalls = nil
+
+	mockParamRepo.On("GetByID", ctx, levelID).Return(&models.Parameter{ID: levelID, Type: ptrStr("course_level")}, nil).Once()
+	mockParamRepo.On("GetByID", ctx, langID).Return(&models.Parameter{ID: langID, Type: ptrStr("lang")}, nil).Once()
+	mockParamRepo.On("GetByID", ctx, topicID).Return(&models.Parameter{ID: topicID, Type: ptrStr("topic")}, nil).Once()
+
+	cID := uuid.New()
+	mockCourseRepo.On("Create", ctx, uuid.Nil, "A", "B", "C", 100.0, 10.0, (*string)(nil)).
+		Return(&models.Course{ID: cID, Title: "A", Description: "B", ShortDescription: "C", Price: 100, DiscountRate: 10, CreatedAt: time.Now(), UpdatedAt: time.Now()}, nil).Once()
+	mockParamRepo.On("AssignParametersToModule", ctx, "course", cID, []uuid.UUID{levelID}).Return(nil).Once()
+	mockParamRepo.On("AssignParametersToModule", ctx, "course", cID, []uuid.UUID{langID}).Return(nil).Once()
+	mockParamRepo.On("AssignParametersToModule", ctx, "course", cID, []uuid.UUID{topicID}).Return(nil).Once()
+
+	res, err := useCase.Create(ctx, &courseDto.ReqCreateCourse{
+		Title:            "A",
+		Description:      "B",
+		ShortDescription: "C",
+		Price:            100,
+		DiscountRate:     10,
+		LevelID:          levelID,
+		LangID:           langID,
+		TopicIDs:         []uuid.UUID{topicID},
+	}, "")
+	assert.NoError(t, err)
+	assert.NotNil(t, res)
+	mockCourseRepo.AssertExpectations(t)
+	mockParamRepo.AssertExpectations(t)
+}
+
+func ptrStr(s string) *string { return &s }
