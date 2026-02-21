@@ -82,6 +82,76 @@ brew install go-task/tap/go-task  # macOS
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
+### Windows Setup
+- Install Go: unduh installer dari https://go.dev/dl/ lalu jalankan MSI. Pastikan PATH menyertakan %UserProfile%\go\bin dan C:\Program Files\Go\bin.
+- Install PostgreSQL: unduh dari https://www.postgresql.org/download/windows/ dan jalankan installer (sertakan psql).
+- Install Redis:
+  - Disarankan via Docker Desktop: `docker run -d --name redis -p 6379:6379 redis:7`
+  - Alternatif: gunakan Memurai (compatible Redis) https://www.memurai.com/
+- Install Migrate CLI:
+  - Scoop: `scoop install migrate` (https://scoop.sh)
+  - Chocolatey: `choco install migrate` (https://chocolatey.org)
+- Install Task:
+  - Scoop: `scoop install go-task`
+  - Chocolatey: `choco install task`
+- Install Swag: `go install github.com/swaggo/swag/cmd/swag@latest` lalu pastikan `%GOBIN%` ada di PATH.
+- Salin env: `copy .env.example .env`
+- Buat database:
+  ```powershell
+  psql -U postgres -c "CREATE DATABASE base_local;"
+  ```
+- Jalankan:
+  ```powershell
+  swag init -g router/router.go
+  go run .\main.go
+  ```
+
+### Linux Setup (Ubuntu/Debian)
+- Install Go:
+  - Unduh tar.gz dari https://go.dev/dl/, ekstrak ke `/usr/local`, lalu export PATH:
+    ```bash
+    sudo tar -C /usr/local -xzf go1.24.0.linux-amd64.tar.gz
+    echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> ~/.profile
+    source ~/.profile
+    ```
+  - Alternatif: `sudo apt install golang` (versi repo mungkin tidak terbaru).
+- Install PostgreSQL:
+  ```bash
+  sudo apt update
+  sudo apt install postgresql postgresql-contrib
+  sudo -u postgres createdb base_local
+  ```
+- Install Redis:
+  ```bash
+  sudo apt install redis-server
+  # atau Docker
+  docker run -d --name redis -p 6379:6379 redis:7
+  ```
+- Install Migrate CLI:
+  ```bash
+  curl -L https://github.com/golang-migrate/migrate/releases/latest/download/migrate-linux-amd64.tar.gz -o migrate.tar.gz
+  tar -xzf migrate.tar.gz
+  sudo mv migrate /usr/local/bin/
+  ```
+- Install Task:
+  ```bash
+  curl -s https://taskfile.dev/install.sh | sh
+  sudo mv ./bin/task /usr/local/bin/task
+  ```
+- Install Swag:
+  ```bash
+  go install github.com/swaggo/swag/cmd/swag@latest
+  ```
+- Salin env:
+  ```bash
+  cp .env.example .env
+  ```
+- Jalankan:
+  ```bash
+  swag init -g router/router.go
+  go run main.go
+  ```
+
 ## 🔧 Instalasi
 
 ### 1. Clone Repository
