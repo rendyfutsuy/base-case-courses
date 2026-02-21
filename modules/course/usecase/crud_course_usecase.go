@@ -43,7 +43,17 @@ func (u *courseUsecase) Create(ctx context.Context, req *dto.ReqCreateCourse, au
 		}
 	}
 
-	c, err := u.repo.Create(ctx, createdBy, req.Title, req.Description, req.ShortDescription, req.Price, req.DiscountRate, req.ThumbnailURL)
+	c, err := u.repo.Create(ctx, createdBy, dto.ToDBCourse{
+		Title:            req.Title,
+		Description:      req.Description,
+		ShortDescription: req.ShortDescription,
+		Price:            req.Price,
+		DiscountRate:     req.DiscountRate,
+		LevelID:          req.LevelID,
+		LangID:           req.LangID,
+		TopicIDs:         req.TopicIDs,
+		ThumbnailURL:     req.ThumbnailURL,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +92,18 @@ func (u *courseUsecase) Update(ctx context.Context, id string, req *dto.ReqUpdat
 		return nil, err
 	}
 
-	c, err := u.repo.Update(ctx, cid, req.Title, req.Description, req.ShortDescription, req.Price, req.DiscountRate, req.ThumbnailURL, req.RemoveThumbnail)
+	c, err := u.repo.Update(ctx, cid, dto.ToDBCourse{
+		Title:            req.Title,
+		Description:      req.Description,
+		ShortDescription: req.ShortDescription,
+		Price:            req.Price,
+		DiscountRate:     req.DiscountRate,
+		RemoveThumbnail:  req.RemoveThumbnail,
+		LevelID:          req.LevelID,
+		LangID:           req.LangID,
+		TopicIDs:         req.TopicIDs,
+		ThumbnailURL:     req.ThumbnailURL,
+	})
 	if err != nil {
 		return nil, err
 	}

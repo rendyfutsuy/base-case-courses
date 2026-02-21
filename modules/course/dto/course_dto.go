@@ -13,10 +13,10 @@ type ReqCreateCourse struct {
 	ShortDescription string      `json:"short_description" validate:"required,max=255"`
 	Price            float64     `json:"price" validate:"required"`
 	DiscountRate     float64     `json:"discount_rate" validate:"required"`
-	ThumbnailURL     *string     `json:"thumbnail_url,omitempty"`
 	LevelID          uuid.UUID   `json:"level_id"`
 	LangID           uuid.UUID   `json:"lang_id"`
 	TopicIDs         []uuid.UUID `json:"topic_ids"`
+	ThumbnailURL     *string
 }
 
 type ReqUpdateCourse struct {
@@ -25,11 +25,11 @@ type ReqUpdateCourse struct {
 	ShortDescription string      `json:"short_description" validate:"required,max=255"`
 	Price            float64     `json:"price" validate:"required"`
 	DiscountRate     float64     `json:"discount_rate" validate:"required"`
-	ThumbnailURL     *string     `json:"thumbnail_url,omitempty"`
 	RemoveThumbnail  bool        `json:"remove_thumbnail" form:"remove_thumbnail"`
 	LevelID          uuid.UUID   `json:"level_id"`
 	LangID           uuid.UUID   `json:"lang_id"`
 	TopicIDs         []uuid.UUID `json:"topic_ids"`
+	ThumbnailURL     *string
 }
 
 type RespCourseIndex struct {
@@ -40,6 +40,19 @@ type RespCourseIndex struct {
 	DiscountRate     float64   `json:"discount_rate"`
 	ThumbnailURL     *string   `json:"thumbnail_url,omitempty"`
 	CreatedAt        time.Time `json:"created_at"`
+}
+
+type ToDBCourse struct {
+	Title            string
+	Description      string
+	ShortDescription string
+	Price            float64
+	DiscountRate     float64
+	RemoveThumbnail  bool
+	LevelID          uuid.UUID
+	LangID           uuid.UUID
+	TopicIDs         []uuid.UUID
+	ThumbnailURL     *string
 }
 
 func ToRespCourseIndex(m models.Course) RespCourseIndex {

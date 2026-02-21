@@ -21,16 +21,16 @@ func NewCourseRepository(db *gorm.DB) course.Repository {
 	return &courseRepository{DB: db}
 }
 
-func (r *courseRepository) Create(ctx context.Context, createdBy uuid.UUID, title, description, shortDescription string, price, discountRate float64, thumbnailURL *string) (*models.Course, error) {
+func (r *courseRepository) Create(ctx context.Context, createdBy uuid.UUID, data dto.ToDBCourse) (*models.Course, error) {
 	now := time.Now().UTC()
 	c := &models.Course{
 		CreatedBy:        createdBy,
-		Title:            title,
-		Description:      description,
-		ShortDescription: shortDescription,
-		Price:            price,
-		DiscountRate:     discountRate,
-		ThumbnailURL:     thumbnailURL,
+		Title:            data.Title,
+		Description:      data.Description,
+		ShortDescription: data.ShortDescription,
+		Price:            data.Price,
+		DiscountRate:     data.DiscountRate,
+		ThumbnailURL:     data.ThumbnailURL,
 		CreatedAt:        now,
 		UpdatedAt:        now,
 	}
@@ -40,22 +40,22 @@ func (r *courseRepository) Create(ctx context.Context, createdBy uuid.UUID, titl
 	return c, nil
 }
 
-func (r *courseRepository) Update(ctx context.Context, id uuid.UUID, title, description, shortDescription string, price, discountRate float64, thumbnailURL *string, removeThumbnail bool) (*models.Course, error) {
+func (r *courseRepository) Update(ctx context.Context, id uuid.UUID, data dto.ToDBCourse) (*models.Course, error) {
 	updates := map[string]interface{}{
-		"title":             title,
-		"description":       description,
-		"short_description": shortDescription,
-		"price":             price,
-		"discount_rate":     discountRate,
+		"title":             data.Title,
+		"description":       data.Description,
+		"short_description": data.ShortDescription,
+		"price":             data.Price,
+		"discount_rate":     data.DiscountRate,
 		"updated_at":        time.Now().UTC(),
 	}
 	// Update thumbnail_url only when requested:
 	// - set to provided URL if thumbnailURL != nil
 	// - set to NULL if removeThumbnail == true
 	// - otherwise, do not modify thumbnail_url
-	if thumbnailURL != nil {
-		updates["thumbnail_url"] = *thumbnailURL
-	} else if removeThumbnail {
+	if data.ThumbnailURL != nil {
+		updates["thumbnail_url"] = *data.ThumbnailURL
+	} else if data.RemoveThumbnail {
 		updates["thumbnail_url"] = nil
 	}
 	c := &models.Course{}
