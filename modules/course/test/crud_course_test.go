@@ -19,15 +19,15 @@ type MockCourseRepository struct {
 	mock.Mock
 }
 
-func (m *MockCourseRepository) Create(ctx context.Context, createdBy uuid.UUID, title, description, shortDescription string, price, discountRate float64, thumbnailURL *string) (*models.Course, error) {
-	args := m.Called(ctx, createdBy, title, description, shortDescription, price, discountRate, thumbnailURL)
+func (m *MockCourseRepository) Create(ctx context.Context, createdBy uuid.UUID, data courseDto.ToDBCourse) (*models.Course, error) {
+	args := m.Called(ctx, createdBy, data)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
 	return args.Get(0).(*models.Course), args.Error(1)
 }
-func (m *MockCourseRepository) Update(ctx context.Context, id uuid.UUID, title, description, shortDescription string, price, discountRate float64, thumbnailURL *string) (*models.Course, error) {
-	args := m.Called(ctx, id, title, description, shortDescription, price, discountRate, thumbnailURL)
+func (m *MockCourseRepository) Update(ctx context.Context, id uuid.UUID, data courseDto.ToDBCourse) (*models.Course, error) {
+	args := m.Called(ctx, id, data)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
@@ -98,6 +98,13 @@ func (m *MockParameterRepository) AssignParametersToModule(ctx context.Context, 
 	args := m.Called(ctx, moduleType, moduleID, parameterIDs)
 	return args.Error(0)
 }
+func (m *MockParameterRepository) GetByModule(ctx context.Context, moduleType string, moduleID uuid.UUID) ([]models.Parameter, error) {
+	args := m.Called(ctx, moduleType, moduleID)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).([]models.Parameter), args.Error(1)
+}
 
 func TestCourseUsecase_Create_TypeValidation(t *testing.T) {
 	ctx := context.Background()
@@ -121,7 +128,7 @@ func TestCourseUsecase_Create_TypeValidation(t *testing.T) {
 		LangID:           langID,
 		TopicIDs:         []uuid.UUID{topicID},
 	}
-	_, err := useCase.Create(ctx, req, "")
+	_, err := useCase.Create(ctx, req, "", nil, "")
 	assert.Error(t, err)
 
 	// valid types then success
@@ -133,7 +140,7 @@ func TestCourseUsecase_Create_TypeValidation(t *testing.T) {
 	mockParamRepo.On("GetByID", ctx, topicID).Return(&models.Parameter{ID: topicID, Type: ptrStr("topic")}, nil).Once()
 
 	cID := uuid.New()
-	mockCourseRepo.On("Create", ctx, uuid.Nil, "A", "B", "C", 100.0, 10.0, (*string)(nil)).
+	mockCourseRepo.On("Create", ctx, uuid.Nil, mock.Anything).
 		Return(&models.Course{ID: cID, Title: "A", Description: "B", ShortDescription: "C", Price: 100, DiscountRate: 10, CreatedAt: time.Now(), UpdatedAt: time.Now()}, nil).Once()
 	mockParamRepo.On("AssignParametersToModule", ctx, "course", cID, []uuid.UUID{levelID}).Return(nil).Once()
 	mockParamRepo.On("AssignParametersToModule", ctx, "course", cID, []uuid.UUID{langID}).Return(nil).Once()
@@ -148,7 +155,7 @@ func TestCourseUsecase_Create_TypeValidation(t *testing.T) {
 		LevelID:          levelID,
 		LangID:           langID,
 		TopicIDs:         []uuid.UUID{topicID},
-	}, "")
+	}, "", nil, "")
 	assert.NoError(t, err)
 	assert.NotNil(t, res)
 	mockCourseRepo.AssertExpectations(t)
