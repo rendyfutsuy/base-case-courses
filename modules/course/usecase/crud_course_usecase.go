@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"bytes"
 	"context"
 	"errors"
 
@@ -11,6 +12,7 @@ import (
 	"github.com/rendyfutsuy/base-go/modules/course/dto"
 	paramMod "github.com/rendyfutsuy/base-go/modules/parameter"
 	"github.com/rendyfutsuy/base-go/utils"
+	utilsServices "github.com/rendyfutsuy/base-go/utils/services"
 )
 
 type courseUsecase struct {
@@ -22,7 +24,7 @@ func NewCourseUsecase(repo course.Repository, paramRepo paramMod.Repository) cou
 	return &courseUsecase{repo: repo, paramRepo: paramRepo}
 }
 
-func (u *courseUsecase) Create(ctx context.Context, req *dto.ReqCreateCourse, authId string) (*models.Course, error) {
+func (u *courseUsecase) Create(ctx context.Context, req *dto.ReqCreateCourse, authId string, thumbnailData []byte, thumbnailName string) (*models.Course, error) {
 	// Validate parameter types
 	if err := u.validateParameterType(ctx, req.LevelID, "course_level"); err != nil {
 		return nil, err
@@ -43,6 +45,20 @@ func (u *courseUsecase) Create(ctx context.Context, req *dto.ReqCreateCourse, au
 		}
 	}
 
+	// Upload thumbnail first if provided, so URL can be saved in a single create
+	var uploadedURL *string
+	if len(thumbnailData) > 0 && thumbnailName != "" {
+		var buf bytes.Buffer
+		buf.Write(thumbnailData)
+		key := uuid.NewString()
+		destinatedPath := "courses/thumbnails/" + key
+		url, err := utilsServices.UploadFile(buf, thumbnailName, destinatedPath)
+		if err != nil {
+			return nil, errors.New("Failed to upload thumbnail file")
+		}
+		uploadedURL = &url
+	}
+
 	c, err := u.repo.Create(ctx, createdBy, dto.ToDBCourse{
 		Title:            req.Title,
 		Description:      req.Description,
@@ -52,7 +68,12 @@ func (u *courseUsecase) Create(ctx context.Context, req *dto.ReqCreateCourse, au
 		LevelID:          req.LevelID,
 		LangID:           req.LangID,
 		TopicIDs:         req.TopicIDs,
-		ThumbnailURL:     req.ThumbnailURL,
+		ThumbnailURL: func() *string {
+			if uploadedURL != nil {
+				return uploadedURL
+			}
+			return req.ThumbnailURL
+		}(),
 	})
 	if err != nil {
 		return nil, err
@@ -73,7 +94,7 @@ func (u *courseUsecase) Create(ctx context.Context, req *dto.ReqCreateCourse, au
 	return c, nil
 }
 
-func (u *courseUsecase) Update(ctx context.Context, id string, req *dto.ReqUpdateCourse, authId string) (*models.Course, error) {
+func (u *courseUsecase) Update(ctx context.Context, id string, req *dto.ReqUpdateCourse, authId string, thumbnailData []byte, thumbnailName string) (*models.Course, error) {
 	// Validate parameter types
 	if err := u.validateParameterType(ctx, req.LevelID, "course_level"); err != nil {
 		return nil, err
@@ -92,6 +113,19 @@ func (u *courseUsecase) Update(ctx context.Context, id string, req *dto.ReqUpdat
 		return nil, err
 	}
 
+	// Upload thumbnail first if provided
+	var uploadedURL *string
+	if len(thumbnailData) > 0 && thumbnailName != "" {
+		var buf bytes.Buffer
+		buf.Write(thumbnailData)
+		destinatedPath := "courses/thumbnails/" + id
+		url, err := utilsServices.UploadFile(buf, thumbnailName, destinatedPath)
+		if err != nil {
+			return nil, errors.New("Failed to upload thumbnail file")
+		}
+		uploadedURL = &url
+	}
+
 	c, err := u.repo.Update(ctx, cid, dto.ToDBCourse{
 		Title:            req.Title,
 		Description:      req.Description,
@@ -102,7 +136,12 @@ func (u *courseUsecase) Update(ctx context.Context, id string, req *dto.ReqUpdat
 		LevelID:          req.LevelID,
 		LangID:           req.LangID,
 		TopicIDs:         req.TopicIDs,
-		ThumbnailURL:     req.ThumbnailURL,
+		ThumbnailURL: func() *string {
+			if uploadedURL != nil {
+				return uploadedURL
+			}
+			return req.ThumbnailURL
+		}(),
 	})
 	if err != nil {
 		return nil, err

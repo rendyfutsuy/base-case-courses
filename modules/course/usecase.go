@@ -9,8 +9,8 @@ import (
 )
 
 type Usecase interface {
-	Create(ctx context.Context, req *dto.ReqCreateCourse, authId string) (*models.Course, error)
-	Update(ctx context.Context, id string, req *dto.ReqUpdateCourse, authId string) (*models.Course, error)
+	Create(ctx context.Context, req *dto.ReqCreateCourse, authId string, thumbnailData []byte, thumbnailName string) (*models.Course, error)
+	Update(ctx context.Context, id string, req *dto.ReqUpdateCourse, authId string, thumbnailData []byte, thumbnailName string) (*models.Course, error)
 	Delete(ctx context.Context, id string, authId string) error
 	GetByID(ctx context.Context, id string) (*models.Course, error)
 	GetIndex(ctx context.Context, req request.PageRequest, filter dto.ReqCourseIndexFilter) ([]models.Course, int, error)

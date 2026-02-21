@@ -8,28 +8,28 @@ import (
 )
 
 type ReqCreateCourse struct {
-	Title            string      `json:"title" validate:"required,max=255"`
-	Description      string      `json:"description" validate:"required"`
-	ShortDescription string      `json:"short_description" validate:"required,max=255"`
-	Price            float64     `json:"price" validate:"required"`
-	DiscountRate     float64     `json:"discount_rate" validate:"required"`
-	LevelID          uuid.UUID   `json:"level_id"`
-	LangID           uuid.UUID   `json:"lang_id"`
-	TopicIDs         []uuid.UUID `json:"topic_ids"`
-	ThumbnailURL     *string
+	Title            string      `json:"title" validate:"required,max=255" form:"title"`
+	Description      string      `json:"description" validate:"required" form:"description"`
+	ShortDescription string      `json:"short_description" validate:"required,max=255" form:"short_description"`
+	Price            float64     `json:"price" validate:"required" form:"price"`
+	DiscountRate     float64     `json:"discount_rate" validate:"required" form:"discount_rate"`
+	LevelID          uuid.UUID   `json:"level_id" form:"level_id"`
+	LangID           uuid.UUID   `json:"lang_id" form:"lang_id"`
+	TopicIDs         []uuid.UUID `json:"topic_ids" form:"topic_ids"`
+	ThumbnailURL     *string     // mutate from thumbnail file
 }
 
 type ReqUpdateCourse struct {
-	Title            string      `json:"title" validate:"required,max=255"`
-	Description      string      `json:"description" validate:"required"`
-	ShortDescription string      `json:"short_description" validate:"required,max=255"`
-	Price            float64     `json:"price" validate:"required"`
-	DiscountRate     float64     `json:"discount_rate" validate:"required"`
-	RemoveThumbnail  bool        `json:"remove_thumbnail" form:"remove_thumbnail"`
-	LevelID          uuid.UUID   `json:"level_id"`
-	LangID           uuid.UUID   `json:"lang_id"`
-	TopicIDs         []uuid.UUID `json:"topic_ids"`
-	ThumbnailURL     *string
+	Title            string      `json:"title" validate:"required,max=255" form:"title"`
+	Description      string      `json:"description" validate:"required" form:"description"`
+	ShortDescription string      `json:"short_description" validate:"required,max=255" form:"short_description"`
+	Price            float64     `json:"price" validate:"required" form:"price"`
+	DiscountRate     float64     `json:"discount_rate" validate:"required" form:"discount_rate"`
+	RemoveThumbnail  bool        `json:"remove_thumbnail" form:"remove_thumbnail" default:"false"`
+	LevelID          uuid.UUID   `json:"level_id" form:"level_id"`
+	LangID           uuid.UUID   `json:"lang_id" form:"lang_id"`
+	TopicIDs         []uuid.UUID `json:"topic_ids" form:"topic_ids"`
+	ThumbnailURL     *string     // mutate from thumbnail file
 }
 
 type RespCourseIndex struct {
