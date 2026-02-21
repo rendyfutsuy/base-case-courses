@@ -13,6 +13,7 @@ type Usecase interface {
 	Update(ctx context.Context, id string, req *dto.ReqUpdateCourse, authId string, thumbnailData []byte, thumbnailName string) (*models.Course, error)
 	Delete(ctx context.Context, id string, authId string) error
 	GetByID(ctx context.Context, id string) (*models.Course, error)
+	GetParameterReferences(ctx context.Context, id string) (*dto.ReferenceObject, *dto.ReferenceObject, []dto.ReferenceObject, error)
 	GetIndex(ctx context.Context, req request.PageRequest, filter dto.ReqCourseIndexFilter) ([]models.Course, int, error)
 	GetAll(ctx context.Context, filter dto.ReqCourseIndexFilter) ([]models.Course, error)
 }

@@ -213,3 +213,16 @@ func (r *parameterRepository) GetAll(ctx context.Context, filter dto.ReqParamete
 	}
 	return parameters, nil
 }
+
+func (r *parameterRepository) GetByModule(ctx context.Context, moduleType string, moduleID uuid.UUID) ([]models.Parameter, error) {
+	var params []models.Parameter
+	if err := r.DB.WithContext(ctx).
+		Table("parameters p").
+		Select("p.id, p.name, p.type").
+		Joins("JOIN parameters_to_module ptm ON ptm.parameter_id = p.id").
+		Where("ptm.module_type = ? AND ptm.module_id = ? AND p.deleted_at IS NULL", moduleType, moduleID).
+		Find(&params).Error; err != nil {
+		return nil, err
+	}
+	return params, nil
+}

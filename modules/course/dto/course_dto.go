@@ -38,7 +38,8 @@ type RespCourseIndex struct {
 	ShortDescription string    `json:"short_description"`
 	Price            float64   `json:"price"`
 	DiscountRate     float64   `json:"discount_rate"`
-	ThumbnailURL     *string   `json:"thumbnail_url,omitempty"`
+	DiscountedPrice  float64   `json:"discounted_price"`
+	ThumbnailURL     *string   `json:"thumbnail_url"`
 	CreatedAt        time.Time `json:"created_at"`
 }
 
@@ -56,30 +57,42 @@ type ToDBCourse struct {
 }
 
 func ToRespCourseIndex(m models.Course) RespCourseIndex {
+	discounted := m.Price - (m.Price * (m.DiscountRate / 100.0))
 	return RespCourseIndex{
 		ID:               m.ID,
 		Title:            m.Title,
 		ShortDescription: m.ShortDescription,
 		Price:            m.Price,
 		DiscountRate:     m.DiscountRate,
+		DiscountedPrice:  discounted,
 		ThumbnailURL:     m.ThumbnailURL,
 		CreatedAt:        m.CreatedAt,
 	}
 }
 
+type ReferenceObject struct {
+	ID   uuid.UUID `json:"id"`
+	Name string    `json:"name"`
+}
+
 type RespCourse struct {
-	ID               uuid.UUID `json:"id"`
-	Title            string    `json:"title"`
-	Description      string    `json:"description"`
-	ShortDescription string    `json:"short_description"`
-	Price            float64   `json:"price"`
-	DiscountRate     float64   `json:"discount_rate"`
-	ThumbnailURL     *string   `json:"thumbnail_url,omitempty"`
-	CreatedAt        time.Time `json:"created_at"`
-	UpdatedAt        time.Time `json:"updated_at"`
+	ID               uuid.UUID         `json:"id"`
+	Title            string            `json:"title"`
+	Description      string            `json:"description"`
+	ShortDescription string            `json:"short_description"`
+	Price            float64           `json:"price"`
+	DiscountRate     float64           `json:"discount_rate"`
+	DiscountedPrice  float64           `json:"discounted_price"`
+	Level            *ReferenceObject  `json:"level"`
+	Lang             *ReferenceObject  `json:"lang"`
+	Topics           []ReferenceObject `json:"topics"`
+	ThumbnailURL     *string           `json:"thumbnail_url"`
+	CreatedAt        time.Time         `json:"created_at"`
+	UpdatedAt        time.Time         `json:"updated_at"`
 }
 
 func ToRespCourse(m models.Course) RespCourse {
+	discounted := m.Price - (m.Price * (m.DiscountRate / 100.0))
 	return RespCourse{
 		ID:               m.ID,
 		Title:            m.Title,
@@ -87,6 +100,7 @@ func ToRespCourse(m models.Course) RespCourse {
 		ShortDescription: m.ShortDescription,
 		Price:            m.Price,
 		DiscountRate:     m.DiscountRate,
+		DiscountedPrice:  discounted,
 		ThumbnailURL:     m.ThumbnailURL,
 		CreatedAt:        m.CreatedAt,
 		UpdatedAt:        m.UpdatedAt,

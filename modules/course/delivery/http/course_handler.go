@@ -177,7 +177,15 @@ func (h *CourseHandler) GetByID(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, err.Error()))
 	}
+	level, lang, topics, err := h.Usecase.GetParameterReferences(ctx, id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.SetErrorResponse(http.StatusBadRequest, err.Error()))
+	}
+	out := dto.ToRespCourse(*res)
+	out.Level = level
+	out.Lang = lang
+	out.Topics = topics
 	resp := response.NonPaginationResponse{}
-	resp, _ = resp.SetResponse(dto.ToRespCourse(*res))
+	resp, _ = resp.SetResponse(out)
 	return c.JSON(http.StatusOK, resp)
 }

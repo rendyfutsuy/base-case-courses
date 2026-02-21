@@ -178,6 +178,33 @@ func (u *courseUsecase) GetByID(ctx context.Context, id string) (*models.Course,
 	return u.repo.GetByID(ctx, cid)
 }
 
+func (u *courseUsecase) GetParameterReferences(ctx context.Context, id string) (*dto.ReferenceObject, *dto.ReferenceObject, []dto.ReferenceObject, error) {
+	cid, err := utils.StringToUUID(id)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	params, err := u.paramRepo.GetByModule(ctx, "course", cid)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	var level *dto.ReferenceObject
+	var lang *dto.ReferenceObject
+	topics := make([]dto.ReferenceObject, 0)
+	for _, p := range params {
+		if p.Type == nil {
+			continue
+		}
+		switch *p.Type {
+		case "course_level":
+			level = &dto.ReferenceObject{ID: p.ID, Name: p.Name}
+		case "lang":
+			lang = &dto.ReferenceObject{ID: p.ID, Name: p.Name}
+		case "topic":
+			topics = append(topics, dto.ReferenceObject{ID: p.ID, Name: p.Name})
+		}
+	}
+	return level, lang, topics, nil
+}
 func (u *courseUsecase) GetIndex(ctx context.Context, req request.PageRequest, filter dto.ReqCourseIndexFilter) ([]models.Course, int, error) {
 	return u.repo.GetIndex(ctx, req, filter)
 }
