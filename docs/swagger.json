@@ -7431,6 +7431,9 @@
                 "created_at": {
                     "type": "string"
                 },
+                "deletable": {
+                    "type": "boolean"
+                },
                 "desc": {
                     "type": "string"
                 },
@@ -7462,6 +7465,9 @@
                 },
                 "created_at": {
                     "type": "string"
+                },
+                "deletable": {
+                    "type": "boolean"
                 },
                 "id": {
                     "type": "string"

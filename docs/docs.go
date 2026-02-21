@@ -7439,6 +7439,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "deletable": {
+                    "type": "boolean"
+                },
                 "desc": {
                     "type": "string"
                 },
@@ -7470,6 +7473,9 @@ const docTemplate = `{
                 },
                 "created_at": {
                     "type": "string"
+                },
+                "deletable": {
+                    "type": "boolean"
                 },
                 "id": {
                     "type": "string"
