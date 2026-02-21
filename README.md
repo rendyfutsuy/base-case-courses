@@ -88,7 +88,7 @@ go install github.com/swaggo/swag/cmd/swag@latest
 
 ```bash
 git clone <repository-url>
-cd base-go
+cd base-case-courses
 ```
 
 ### 2. Install Go Dependencies
@@ -217,10 +217,10 @@ Aplikasi akan berjalan di `http://localhost:9090` (sesuai konfigurasi `app_port`
 
 ```bash
 # Build aplikasi
-go build -o base-go main.go
+go build -o base-case-courses main.go
 
 # Jalankan aplikasi
-./base-go
+./base-case-courses
 ```
 
 ### Menggunakan Air (Hot Reload)
@@ -312,7 +312,7 @@ swag init -g router/router.go
 ### Build Docker Image
 
 ```bash
-docker build -t base-go:latest .
+docker build -t base-case-courses:latest .
 ```
 
 ### Run dengan Docker Compose
@@ -326,7 +326,7 @@ Aplikasi akan berjalan di `http://localhost:9000`.
 ## 📁 Struktur Proyek
 
 ```
-base-go/
+base-case-courses/
 ├── constants/          # Konstanta aplikasi
 ├── database/           # Database setup, migrations, seeders
 │   ├── migrations/     # Database migrations
