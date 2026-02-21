@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/rendyfutsuy/base-go/models"
+	utilsServices "github.com/rendyfutsuy/base-go/utils/services"
 )
 
 type ReqCreateCourse struct {
@@ -93,6 +94,12 @@ type RespCourse struct {
 
 func ToRespCourse(m models.Course) RespCourse {
 	discounted := m.Price - (m.Price * (m.DiscountRate / 100.0))
+
+	var presignedURL string
+	if m.ThumbnailURL != nil {
+		presignedURL, _ = utilsServices.GeneratePresignedURL(*m.ThumbnailURL)
+	}
+
 	return RespCourse{
 		ID:               m.ID,
 		Title:            m.Title,
@@ -101,7 +108,7 @@ func ToRespCourse(m models.Course) RespCourse {
 		Price:            m.Price,
 		DiscountRate:     m.DiscountRate,
 		DiscountedPrice:  discounted,
-		ThumbnailURL:     m.ThumbnailURL,
+		ThumbnailURL:     &presignedURL,
 		CreatedAt:        m.CreatedAt,
 		UpdatedAt:        m.UpdatedAt,
 	}
