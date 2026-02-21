@@ -1,0 +1,150 @@
+package usecase
+
+import (
+	"context"
+	"errors"
+
+	"github.com/rendyfutsuy/base-go/constants"
+	"github.com/rendyfutsuy/base-go/modules/user_management/dto"
+	"github.com/rendyfutsuy/base-go/utils"
+	"github.com/rendyfutsuy/base-go/utils/token_storage"
+	"golang.org/x/crypto/bcrypt"
+)
+
+func (u *userUsecase) UpdateUserPassword(ctx context.Context, id string, passwordChunks *dto.ReqUpdateUserPassword) error {
+	// parsing UUID
+	userId, err := utils.StringToUUID(id)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// assert user password can be change
+	_, err = u.userRepo.IsUserPasswordCanUpdated(ctx, userId)
+
+	// if error occurs, return error
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// assert new password not the same wit any previous password
+	isCurrentPasswordPassed, err := u.auth.AssertPasswordNeverUsesByUser(ctx, passwordChunks.NewPassword, userId)
+
+	// if new password fail to match return error
+	if !isCurrentPasswordPassed {
+		return errors.New(constants.AuthNewPasswordSameAsOld)
+	}
+
+	// add new password to password history
+	// hash password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(passwordChunks.NewPassword), bcrypt.DefaultCost)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// add new password to password history
+	err = u.auth.AddPasswordHistory(ctx, string(hashedPassword), userId)
+
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// reset password attempt counter to 0
+	err = u.auth.ResetPasswordAttempt(ctx, userId)
+
+	// if fail to reset return error
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// update user password bases on new_password
+	_, err = u.auth.UpdatePasswordById(ctx, passwordChunks.NewPassword, userId)
+
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// destroy all token session
+	err = token_storage.RevokeAllUserSessions(ctx, userId)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (u *userUsecase) UpdateUserPasswordNoCheckRequired(ctx context.Context, id string, passwordChunks *dto.ReqUpdateUserPassword) error {
+	// parsing UUID
+	userId, err := utils.StringToUUID(id)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// add new password to password history
+	// hash password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(passwordChunks.NewPassword), bcrypt.DefaultCost)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// add new password to password history
+	err = u.auth.AddPasswordHistory(ctx, string(hashedPassword), userId)
+
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// reset password attempt counter to 0
+	err = u.auth.ResetPasswordAttempt(ctx, userId)
+
+	// if fail to reset return error
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// update user password bases on new_password
+	_, err = u.auth.UpdatePasswordById(ctx, passwordChunks.NewPassword, userId)
+
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// destroy all token session
+	err = token_storage.RevokeAllUserSessions(ctx, userId)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (u *userUsecase) AssertCurrentUserPassword(ctx context.Context, id string, inputtedPassword string) error {
+	// parsing UUID
+	userId, err := utils.StringToUUID(id)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return err
+	}
+
+	// assert current password given is same with saved password
+	isPasswordRight, err := u.auth.AssertPasswordRight(ctx, inputtedPassword, userId)
+
+	// if old password fail to match return error
+	if !isPasswordRight {
+		return errors.New("Given Password not Match with Current Password")
+	}
+
+	return nil
+}

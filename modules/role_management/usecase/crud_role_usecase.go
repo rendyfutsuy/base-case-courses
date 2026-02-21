@@ -1,0 +1,158 @@
+package usecase
+
+import (
+	"context"
+	"errors"
+	"fmt"
+
+	"github.com/rendyfutsuy/base-go/constants"
+	"github.com/rendyfutsuy/base-go/helpers/request"
+	"github.com/rendyfutsuy/base-go/models"
+	"github.com/rendyfutsuy/base-go/modules/role_management/dto"
+	"github.com/rendyfutsuy/base-go/utils"
+	"github.com/rendyfutsuy/base-go/utils/token_storage"
+
+	"github.com/google/uuid"
+)
+
+func (u *roleUsecase) CreateRole(ctx context.Context, req *dto.ReqCreateRole, userID string) (roleRes *models.Role, err error) {
+	isSuperAdminRole := isSuperAdminRoleName(req.Name)
+
+	// assert each Permission group exists
+	for _, permissionGroupId := range req.PermissionGroups {
+		// check permission availability on DB
+		permissionGroup, err := u.roleRepo.GetPermissionGroupByID(ctx, permissionGroupId)
+
+		// return error if any permission group not valid one.
+		if err != nil {
+			return nil, errors.New(fmt.Sprintf(constants.PermissionGroupNotFoundWithID, permissionGroupId))
+		}
+
+		if !isSuperAdminRole && isRestrictedUserPermissionGroup(permissionGroup) {
+			return nil, errors.New(constants.UserRestrictedPermissionGroupError)
+		}
+	}
+
+	// assert name is not duplicated
+	result, err := u.roleRepo.RoleNameIsNotDuplicated(ctx, req.Name, uuid.Nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if result == false {
+		utils.Logger.Error(constants.RoleErrorRoleNotFound)
+		return nil, errors.New(constants.RoleErrorRoleNotFound)
+	}
+
+	count, err := u.roleRepo.CountRole(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	formatCount := fmt.Sprintf("%07d", *count+1)
+
+	roleDb := req.ToDBCreateRole(formatCount, userID)
+
+	roleRes, err = u.roleRepo.CreateRole(ctx, roleDb)
+	if err != nil {
+		return nil, err
+	}
+
+	return roleRes, err
+}
+
+func (u *roleUsecase) GetRoleByID(ctx context.Context, id string) (role *models.Role, err error) {
+	uId, err := utils.StringToUUID(id)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return nil, err
+	}
+
+	return u.roleRepo.GetRoleByID(ctx, uId)
+}
+
+func (u *roleUsecase) GetIndexRole(ctx context.Context, req request.PageRequest) (role_infos []models.Role, total int, err error) {
+	return u.roleRepo.GetIndexRole(ctx, req)
+}
+
+func (u *roleUsecase) GetAllRole(ctx context.Context) (role_infos []models.Role, err error) {
+	return u.roleRepo.GetAllRole(ctx)
+}
+
+func (u *roleUsecase) UpdateRole(ctx context.Context, id string, req *dto.ReqUpdateRole, userID string) (roleRes *models.Role, err error) {
+	isSuperAdminRole := isSuperAdminRoleName(req.Name)
+
+	// assert each Permission group exists
+	for _, permissionGroupId := range req.PermissionGroups {
+		// check permission availability on DB
+		permissionGroup, err := u.roleRepo.GetPermissionGroupByID(ctx, permissionGroupId)
+
+		// return error if any permission group not valid one.
+		if err != nil {
+			return nil, errors.New(fmt.Sprintf(constants.PermissionGroupNotFoundWithID, permissionGroupId))
+		}
+
+		if !isSuperAdminRole && isRestrictedUserPermissionGroup(permissionGroup) {
+			return nil, errors.New(constants.UserRestrictedPermissionGroupError)
+		}
+	}
+
+	// parsing UUID
+	uId, err := utils.StringToUUID(id)
+	if err != nil {
+		utils.Logger.Error(err.Error())
+		return nil, err
+	}
+
+	// assert name is not duplicated
+	result, err := u.roleRepo.RoleNameIsNotDuplicated(ctx, req.Name, uId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if result == false {
+		utils.Logger.Error(constants.RoleErrorRoleNotFound)
+		return nil, errors.New(constants.RoleErrorRoleNotFound)
+	}
+
+	// Mapping Input to DB
+	roleDb := dto.ToDBUpdateRole{
+		Name:             req.Name,
+		Description:      req.Description,
+		PermissionGroups: req.PermissionGroups,
+	}
+
+	return u.roleRepo.UpdateRole(ctx, uId, roleDb)
+}
+
+func (u *roleUsecase) SoftDeleteRole(ctx context.Context, id string, userID string) (roleRes *models.Role, err error) {
+	// if role has user, return error
+	role, err := u.GetRoleByID(ctx, id)
+	if err != nil {
+		return nil, errors.New(constants.RoleNotFound)
+	}
+
+	if role.TotalUser > 0 {
+		return nil, errors.New(constants.RoleHasUsersCannotDelete)
+	}
+
+	roleDb := dto.ToDBDeleteRole{}
+
+	return u.roleRepo.SoftDeleteRole(ctx, role.ID, roleDb)
+}
+
+func (u *roleUsecase) RoleNameIsNotDuplicated(ctx context.Context, name string, id uuid.UUID) (roleRes *models.Role, err error) {
+	return u.roleRepo.GetDuplicatedRole(ctx, name, id)
+}
+
+func (u *roleUsecase) MyPermissionsByUserToken(ctx context.Context, token string) (role *models.Role, err error) {
+	// get user id from token
+	user, err := token_storage.ValidateAccessToken(ctx, token)
+	if err != nil {
+		return nil, errors.New(constants.UserNotFound)
+	}
+
+	return u.roleRepo.GetRoleByID(ctx, user.RoleId)
+}
