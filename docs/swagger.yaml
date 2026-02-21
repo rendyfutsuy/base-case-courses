@@ -1,4 +1,11 @@
 definitions:
+  dto.ReferenceObject:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   dto.ReqAuthUser:
     properties:
       login:
@@ -43,70 +50,37 @@ definitions:
     required:
     - password
     type: object
-  dto.ReqCreateBacking:
+  dto.ReqCreateCourse:
     properties:
-      name:
+      description:
+        type: string
+      discount_rate:
+        type: number
+      lang_id:
+        type: string
+      level_id:
+        type: string
+      price:
+        type: number
+      short_description:
         maxLength: 255
         type: string
-      type_id:
+      thumbnailURL:
+        description: mutate from thumbnail file
         type: string
-    required:
-    - name
-    - type_id
-    type: object
-  dto.ReqCreateCity:
-    properties:
-      area_code:
-        maxLength: 50
-        type: string
-      name:
+      title:
         maxLength: 255
         type: string
-      province_id:
-        type: string
-    required:
-    - name
-    - province_id
-    type: object
-  dto.ReqCreateDistrict:
-    properties:
-      city_id:
-        type: string
-      name:
-        maxLength: 255
-        type: string
-    required:
-    - city_id
-    - name
-    type: object
-  dto.ReqCreateExpedition:
-    properties:
-      address:
-        maxLength: 255
-        type: string
-      expedition_name:
-        maxLength: 255
-        type: string
-      notes:
-        type: string
-      phone_numbers:
+      topic_ids:
         items:
           type: string
         type: array
-      telp_numbers:
-        items:
-          $ref: '#/definitions/dto.TelpNumberItem'
-        type: array
     required:
-    - expedition_name
-    type: object
-  dto.ReqCreateGroup:
-    properties:
-      name:
-        maxLength: 255
-        type: string
-    required:
-    - name
+    - description
+    - discount_rate
+    - price
+    - short_description
+    - title
     type: object
   dto.ReqCreateParameter:
     properties:
@@ -128,14 +102,6 @@ definitions:
     - code
     - name
     type: object
-  dto.ReqCreateProvince:
-    properties:
-      name:
-        maxLength: 100
-        type: string
-    required:
-    - name
-    type: object
   dto.ReqCreateRole:
     properties:
       accesses:
@@ -151,39 +117,6 @@ definitions:
     required:
     - accesses
     - role_name
-    type: object
-  dto.ReqCreateSubGroup:
-    properties:
-      groups_id:
-        type: string
-      name:
-        maxLength: 255
-        type: string
-    required:
-    - groups_id
-    - name
-    type: object
-  dto.ReqCreateSubdistrict:
-    properties:
-      district_id:
-        type: string
-      name:
-        maxLength: 255
-        type: string
-    required:
-    - district_id
-    - name
-    type: object
-  dto.ReqCreateType:
-    properties:
-      name:
-        maxLength: 255
-        type: string
-      subgroup_id:
-        type: string
-    required:
-    - name
-    - subgroup_id
     type: object
   dto.ReqCreateUser:
     properties:
@@ -255,70 +188,40 @@ definitions:
     required:
     - email
     type: object
-  dto.ReqUpdateBacking:
+  dto.ReqUpdateCourse:
     properties:
-      name:
+      description:
+        type: string
+      discount_rate:
+        type: number
+      lang_id:
+        type: string
+      level_id:
+        type: string
+      price:
+        type: number
+      remove_thumbnail:
+        default: false
+        type: boolean
+      short_description:
         maxLength: 255
         type: string
-      type_id:
+      thumbnailURL:
+        description: mutate from thumbnail file
         type: string
-    required:
-    - name
-    - type_id
-    type: object
-  dto.ReqUpdateCity:
-    properties:
-      area_code:
-        maxLength: 50
-        type: string
-      name:
+      title:
         maxLength: 255
         type: string
-      province_id:
-        type: string
-    required:
-    - name
-    - province_id
-    type: object
-  dto.ReqUpdateDistrict:
-    properties:
-      city_id:
-        type: string
-      name:
-        maxLength: 255
-        type: string
-    required:
-    - city_id
-    - name
-    type: object
-  dto.ReqUpdateExpedition:
-    properties:
-      address:
-        maxLength: 255
-        type: string
-      expedition_name:
-        maxLength: 255
-        type: string
-      notes:
-        type: string
-      phone_numbers:
+      topic_ids:
         items:
           type: string
         type: array
-      telp_numbers:
-        items:
-          $ref: '#/definitions/dto.TelpNumberItem'
-        type: array
     required:
-    - expedition_name
-    type: object
-  dto.ReqUpdateGroup:
-    properties:
-      name:
-        maxLength: 255
-        type: string
-    required:
-    - name
+    - description
+    - discount_rate
+    - price
+    - short_description
+    - title
     type: object
   dto.ReqUpdateParameter:
     properties:
@@ -357,14 +260,6 @@ definitions:
     required:
     - name
     type: object
-  dto.ReqUpdateProvince:
-    properties:
-      name:
-        maxLength: 100
-        type: string
-    required:
-    - name
-    type: object
   dto.ReqUpdateRole:
     properties:
       accesses:
@@ -380,39 +275,6 @@ definitions:
     required:
     - accesses
     - role_name
-    type: object
-  dto.ReqUpdateSubGroup:
-    properties:
-      groups_id:
-        type: string
-      name:
-        maxLength: 255
-        type: string
-    required:
-    - groups_id
-    - name
-    type: object
-  dto.ReqUpdateSubdistrict:
-    properties:
-      district_id:
-        type: string
-      name:
-        maxLength: 255
-        type: string
-    required:
-    - district_id
-    - name
-    type: object
-  dto.ReqUpdateType:
-    properties:
-      name:
-        maxLength: 255
-        type: string
-      subgroup_id:
-        type: string
-    required:
-    - name
-    - subgroup_id
     type: object
   dto.ReqUpdateUser:
     properties:
@@ -477,209 +339,54 @@ definitions:
       total_rows:
         type: integer
     type: object
-  dto.RespBacking:
+  dto.RespCourse:
     properties:
-      backing_code:
-        description: omit when creating new backing
-        type: string
       created_at:
         type: string
-      created_by:
+      description:
         type: string
-      deletable:
-        type: boolean
-      groups_id:
-        type: string
-      groups_name:
-        type: string
+      discount_rate:
+        type: number
+      discounted_price:
+        type: number
       id:
         type: string
-      name:
+      lang:
+        $ref: '#/definitions/dto.ReferenceObject'
+      level:
+        $ref: '#/definitions/dto.ReferenceObject'
+      price:
+        type: number
+      short_description:
         type: string
-      subgroup_id:
+      thumbnail_url:
         type: string
-      subgroup_name:
+      title:
         type: string
-      type_id:
-        type: string
-      type_name:
-        type: string
-      updated_at:
-        type: string
-      updated_by:
-        type: string
-    type: object
-  dto.RespBackingIndex:
-    properties:
-      backing_code:
-        type: string
-      created_at:
-        type: string
-      deletable:
-        type: boolean
-      group_name:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      subgroup_name:
-        type: string
-      type_id:
-        type: string
-      type_name:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  dto.RespCity:
-    properties:
-      area_code:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      province:
-        $ref: '#/definitions/dto.RespProvince'
-      province_id:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  dto.RespCityAreaCode:
-    properties:
-      area_code:
-        type: string
-    type: object
-  dto.RespCityIndex:
-    properties:
-      area_code:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      province_id:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  dto.RespDistrict:
-    properties:
-      city:
-        $ref: '#/definitions/dto.RespCity'
-      city_id:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  dto.RespDistrictIndex:
-    properties:
-      city_id:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  dto.RespExpedition:
-    properties:
-      address:
-        type: string
-      created_at:
-        type: string
-      created_by:
-        type: string
-      deletable:
-        type: boolean
-      expedition_code:
-        type: string
-      expedition_name:
-        type: string
-      id:
-        type: string
-      notes:
-        type: string
-      phone_numbers:
+      topics:
         items:
-          type: string
-        type: array
-      telp_numbers:
-        items:
-          $ref: '#/definitions/dto.TelpNumberItem'
+          $ref: '#/definitions/dto.ReferenceObject'
         type: array
       updated_at:
         type: string
-      updated_by:
-        type: string
     type: object
-  dto.RespExpeditionIndex:
-    properties:
-      address:
-        type: string
-      created_at:
-        type: string
-      deletable:
-        type: boolean
-      expedition_code:
-        type: string
-      expedition_name:
-        type: string
-      id:
-        type: string
-      phone_number:
-        type: string
-      telp_number:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  dto.RespGroup:
+  dto.RespCourseIndex:
     properties:
       created_at:
         type: string
-      deletable:
-        description: true if group is not used in any active sub-group
-        type: boolean
-      group_code:
-        description: omit when creating new group
-        type: string
+      discount_rate:
+        type: number
+      discounted_price:
+        type: number
       id:
         type: string
-      name:
+      price:
+        type: number
+      short_description:
         type: string
-      updated_at:
+      thumbnail_url:
         type: string
-    type: object
-  dto.RespGroupIndex:
-    properties:
-      created_at:
-        type: string
-      deletable:
-        description: true if group is not used in any active sub-group
-        type: boolean
-      group_code:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      updated_at:
+      title:
         type: string
     type: object
   dto.RespParameter:
@@ -749,28 +456,6 @@ definitions:
       name:
         type: string
     type: object
-  dto.RespProvince:
-    properties:
-      created_at:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  dto.RespProvinceIndex:
-    properties:
-      created_at:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      updated_at:
-        type: string
-    type: object
   dto.RespRole:
     properties:
       id:
@@ -817,120 +502,6 @@ definitions:
         type: integer
       updated_at:
         $ref: '#/definitions/utils.NullTime'
-    type: object
-  dto.RespSubGroup:
-    properties:
-      created_at:
-        type: string
-      created_by:
-        type: string
-      deletable:
-        type: boolean
-      groups_id:
-        type: string
-      groups_name:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      subgroup_code:
-        type: string
-      updated_at:
-        type: string
-      updated_by:
-        type: string
-    type: object
-  dto.RespSubGroupIndex:
-    properties:
-      created_at:
-        type: string
-      deletable:
-        type: boolean
-      groups_id:
-        type: string
-      groups_name:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      subgroup_code:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  dto.RespSubdistrict:
-    properties:
-      created_at:
-        type: string
-      district:
-        $ref: '#/definitions/dto.RespDistrict'
-      district_id:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  dto.RespSubdistrictIndex:
-    properties:
-      created_at:
-        type: string
-      district_id:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  dto.RespType:
-    properties:
-      created_at:
-        type: string
-      deletable:
-        type: boolean
-      group_id:
-        type: string
-      group_name:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      subgroup_id:
-        type: string
-      subgroup_name:
-        type: string
-      type_code:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  dto.RespTypeIndex:
-    properties:
-      created_at:
-        type: string
-      deletable:
-        type: boolean
-      group_name:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      subgroup_id:
-        type: string
-      subgroup_name:
-        type: string
-      type_code:
-        type: string
-      updated_at:
-        type: string
     type: object
   dto.RespUser:
     properties:
@@ -980,15 +551,6 @@ definitions:
         type: string
       username:
         type: string
-    type: object
-  dto.TelpNumberItem:
-    properties:
-      area_code:
-        type: string
-      phone_number:
-        type: string
-    required:
-    - phone_number
     type: object
   dto.UserProfile:
     properties:
@@ -1303,78 +865,47 @@ paths:
       summary: Reset user password
       tags:
       - Authentication
-  /v1/backing:
+  /v1/course:
     get:
       consumes:
       - application/json
-      description: Retrieve a paginated list of backings with optional search and
-        filters. Supports multiple filter values for backing_code, name, and type_id.
+      description: Retrieve a paginated list of courses with optional filtering
       parameters:
-      - description: Page number
+      - default: 1
+        description: Page number
         in: query
         name: page
         type: integer
-      - description: Items per page
+      - default: 10
+        description: Items per page
         in: query
         name: per_page
         type: integer
-      - description: 'Sort column (allowed: id, type_id, backing_code, name, created_at,
-          updated_at)'
+      - description: Sort column
         in: query
         name: sort_by
         type: string
-      - description: Sort order (asc or desc)
+      - description: Sort order (asc/desc)
         in: query
         name: sort_order
         type: string
-      - description: Search keyword (searches in backing_code and name)
+      - description: Search query
         in: query
         name: search
         type: string
       - collectionFormat: csv
-        description: Filter by backing codes (multiple values)
         in: query
         items:
           type: string
-        name: backing_codes
+        name: lang_ids
         type: array
       - collectionFormat: csv
-        description: Filter by names (multiple values)
         in: query
         items:
           type: string
-        name: names
+        name: level_ids
         type: array
-      - collectionFormat: csv
-        description: Filter by type IDs (multiple values, UUID format)
-        in: query
-        items:
-          type: string
-        name: type_ids
-        type: array
-      - collectionFormat: csv
-        description: Multiple values
-        in: query
-        items:
-          type: string
-        name: backing_codes
-        type: array
-      - collectionFormat: csv
-        description: Filter by goodGroup IDs (multiple values, UUIDs as strings)
-        in: query
-        items:
-          type: string
-        name: group_ids
-        type: array
-      - collectionFormat: csv
-        description: Multiple values
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      - description: Search keyword for filtering by backing_code, name
-        in: query
+      - in: query
         name: search
         type: string
       - in: query
@@ -1384,89 +915,74 @@ paths:
         name: sort_order
         type: string
       - collectionFormat: csv
-        description: Filter by subgroup IDs (multiple values, UUIDs as strings)
         in: query
         items:
           type: string
-        name: subgroup_ids
-        type: array
-      - collectionFormat: csv
-        description: Multiple values
-        in: query
-        items:
-          type: string
-        name: type_ids
+        name: topic_ids
         type: array
       produces:
       - application/json
       responses:
         "200":
-          description: Successfully retrieved backings
+          description: OK
           schema:
             allOf:
             - $ref: '#/definitions/response.PaginationResponse'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/dto.RespBackingIndex'
+                    $ref: '#/definitions/dto.RespCourseIndex'
                   type: array
               type: object
         "400":
-          description: Bad request
+          description: Bad Request
           schema:
             $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get list of backings with pagination
+      summary: Get paginated list of courses
       tags:
-      - Backing
+      - Course
     post:
       consumes:
       - application/json
-      description: Create a new backing with provided type_id and name
+      - multipart/form-data
+      description: Create a course with optional thumbnail upload
       parameters:
-      - description: Backing creation data
+      - description: Course payload
         in: body
-        name: request
+        name: payload
         required: true
         schema:
-          $ref: '#/definitions/dto.ReqCreateBacking'
+          $ref: '#/definitions/dto.ReqCreateCourse'
+      - description: Thumbnail file
+        in: formData
+        name: thumbnail
+        type: file
       produces:
       - application/json
       responses:
         "200":
-          description: Successfully created backing
+          description: OK
           schema:
             allOf:
             - $ref: '#/definitions/response.NonPaginationResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/dto.RespBacking'
+                  $ref: '#/definitions/dto.RespCourse'
               type: object
         "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
+          description: Bad Request
           schema:
             $ref: '#/definitions/response.NonPaginationResponse'
       security:
       - BearerAuth: []
-      summary: Create a new backing
+      summary: Create course
       tags:
-      - Backing
-  /v1/backing/{id}:
+      - Course
+  /v1/course/{id}:
     delete:
-      consumes:
-      - application/json
-      description: Delete an existing backing by ID
+      description: Delete a course by ID
       parameters:
-      - description: Backing UUID
+      - description: Course ID
         in: path
         name: id
         required: true
@@ -1475,32 +991,22 @@ paths:
       - application/json
       responses:
         "200":
-          description: Successfully deleted backing
+          description: OK
           schema:
             $ref: '#/definitions/response.NonPaginationResponse'
         "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Backing not found
+          description: Bad Request
           schema:
             $ref: '#/definitions/response.NonPaginationResponse'
       security:
       - BearerAuth: []
-      summary: Delete backing
+      summary: Delete course
       tags:
-      - Backing
+      - Course
     get:
-      consumes:
-      - application/json
-      description: Retrieve a single backing by its ID
+      description: Retrieve course detail and its parameters
       parameters:
-      - description: Backing UUID
+      - description: Course ID
         in: path
         name: id
         required: true
@@ -1509,1352 +1015,63 @@ paths:
       - application/json
       responses:
         "200":
-          description: Successfully retrieved backing
+          description: OK
           schema:
             allOf:
             - $ref: '#/definitions/response.NonPaginationResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/dto.RespBacking'
+                  $ref: '#/definitions/dto.RespCourse'
               type: object
         "400":
-          description: Bad request - invalid UUID
+          description: Bad Request
           schema:
             $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Backing not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get backing by ID
+      summary: Get course by ID
       tags:
-      - Backing
+      - Course
     put:
       consumes:
       - application/json
-      description: Update an existing backing's information
+      - multipart/form-data
+      description: Update a course with optional thumbnail upload
       parameters:
-      - description: Backing UUID
+      - description: Course ID
         in: path
         name: id
         required: true
         type: string
-      - description: Updated backing data
+      - description: Course payload
         in: body
-        name: request
+        name: payload
         required: true
         schema:
-          $ref: '#/definitions/dto.ReqUpdateBacking'
+          $ref: '#/definitions/dto.ReqUpdateCourse'
+      - description: Thumbnail file
+        in: formData
+        name: thumbnail
+        type: file
       produces:
       - application/json
       responses:
         "200":
-          description: Successfully updated backing
+          description: OK
           schema:
             allOf:
             - $ref: '#/definitions/response.NonPaginationResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/dto.RespBacking'
+                  $ref: '#/definitions/dto.RespCourse'
               type: object
         "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Backing not found
+          description: Bad Request
           schema:
             $ref: '#/definitions/response.NonPaginationResponse'
       security:
       - BearerAuth: []
-      summary: Update backing
+      summary: Update course
       tags:
-      - Backing
-  /v1/backing/export:
-    get:
-      consumes:
-      - application/json
-      description: Export backings to Excel file (.xlsx) with optional search and
-        filter. Same search and filter logic as index but without pagination. Supports
-        multiple filter values for backing_code, name, and type_id.
-      parameters:
-      - description: Search keyword (searches in backing_code and name)
-        in: query
-        name: search
-        type: string
-      - collectionFormat: csv
-        description: Filter by backing codes (multiple values)
-        in: query
-        items:
-          type: string
-        name: backing_codes
-        type: array
-      - collectionFormat: csv
-        description: Filter by names (multiple values)
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      - collectionFormat: csv
-        description: Filter by type IDs (multiple values, UUID format)
-        in: query
-        items:
-          type: string
-        name: type_ids
-        type: array
-      - collectionFormat: csv
-        description: Multiple values
-        in: query
-        items:
-          type: string
-        name: backing_codes
-        type: array
-      - collectionFormat: csv
-        description: Filter by goodGroup IDs (multiple values, UUIDs as strings)
-        in: query
-        items:
-          type: string
-        name: group_ids
-        type: array
-      - collectionFormat: csv
-        description: Multiple values
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      - description: Search keyword for filtering by backing_code, name
-        in: query
-        name: search
-        type: string
-      - in: query
-        name: sort_by
-        type: string
-      - in: query
-        name: sort_order
-        type: string
-      - collectionFormat: csv
-        description: Filter by subgroup IDs (multiple values, UUIDs as strings)
-        in: query
-        items:
-          type: string
-        name: subgroup_ids
-        type: array
-      - collectionFormat: csv
-        description: Multiple values
-        in: query
-        items:
-          type: string
-        name: type_ids
-        type: array
-      produces:
-      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      responses:
-        "200":
-          description: Excel file with backings data
-          schema:
-            type: file
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Export backings to Excel
-      tags:
-      - Backing
-  /v1/city:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a paginated list of cities with optional filters
-      parameters:
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Items per page
-        in: query
-        name: per_page
-        type: integer
-      - description: Search keyword
-        in: query
-        name: search
-        type: string
-      - collectionFormat: csv
-        description: Filter by multiple names (WHERE IN)
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      - description: Filter by province_id
-        in: query
-        name: province_id
-        type: string
-      - description: Search keyword for filtering by name
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved cities
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginationResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/dto.RespCityIndex'
-                  type: array
-              type: object
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get list of cities with pagination
-      tags:
-      - Regency - City
-    post:
-      consumes:
-      - application/json
-      description: Create a new city with provided province_id, name, dan optional
-        area_code
-      parameters:
-      - description: City creation data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqCreateCity'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully created city
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespCity'
-              type: object
-        "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new city
-      tags:
-      - Regency - City
-  /v1/city/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete an existing city by ID
-      parameters:
-      - description: City UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully deleted city
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: City not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete city
-      tags:
-      - Regency - City
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a single city by its ID
-      parameters:
-      - description: City UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved city
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespCity'
-              type: object
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: City not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get city by ID
-      tags:
-      - Regency - City
-    put:
-      consumes:
-      - application/json
-      description: Update an existing city's information termasuk area_code
-      parameters:
-      - description: City UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Updated city data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqUpdateCity'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully updated city
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespCity'
-              type: object
-        "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: City not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Update city
-      tags:
-      - Regency - City
-  /v1/city/area-codes:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve distinct area_code values from city table with optional
-        search by area_code
-      parameters:
-      - description: Search area_code
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved area codes
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/dto.RespCityAreaCode'
-                  type: array
-              type: object
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get distinct city area codes
-      tags:
-      - Regency - City
-  /v1/city/export:
-    get:
-      consumes:
-      - application/json
-      description: Export cities to Excel file (.xlsx) with optional search and filter
-      parameters:
-      - description: Search keyword
-        in: query
-        name: search
-        type: string
-      - collectionFormat: csv
-        description: Filter by multiple names (WHERE IN)
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      - description: Filter by province_id
-        in: query
-        name: province_id
-        type: string
-      - description: Search keyword for filtering by name
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      responses:
-        "200":
-          description: Excel file with cities data
-          schema:
-            type: file
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Export cities to Excel
-      tags:
-      - Regency - City
-  /v1/district:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a paginated list of districts with optional filters
-      parameters:
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Items per page
-        in: query
-        name: per_page
-        type: integer
-      - description: Search keyword
-        in: query
-        name: search
-        type: string
-      - description: Filter by city_id
-        in: query
-        name: city_id
-        type: string
-      - collectionFormat: csv
-        description: Filter by multiple names (WHERE IN)
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      - description: Search keyword for filtering by name
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved districts
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginationResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/dto.RespDistrictIndex'
-                  type: array
-              type: object
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get list of districts with pagination
-      tags:
-      - Regency - District
-    post:
-      consumes:
-      - application/json
-      description: Create a new district with provided city_id and name
-      parameters:
-      - description: District creation data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqCreateDistrict'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully created district
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespDistrict'
-              type: object
-        "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new district
-      tags:
-      - Regency - District
-  /v1/district/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete an existing district by ID
-      parameters:
-      - description: District UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully deleted district
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: District not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete district
-      tags:
-      - Regency - District
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a single district by its ID
-      parameters:
-      - description: District UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved district
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespDistrict'
-              type: object
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: District not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get district by ID
-      tags:
-      - Regency - District
-    put:
-      consumes:
-      - application/json
-      description: Update an existing district's information
-      parameters:
-      - description: District UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Updated district data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqUpdateDistrict'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully updated district
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespDistrict'
-              type: object
-        "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: District not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Update district
-      tags:
-      - Regency - District
-  /v1/district/export:
-    get:
-      consumes:
-      - application/json
-      description: Export districts to Excel file (.xlsx) with optional search and
-        filter
-      parameters:
-      - description: Search keyword
-        in: query
-        name: search
-        type: string
-      - description: Filter by city_id
-        in: query
-        name: city_id
-        type: string
-      - collectionFormat: csv
-        description: Filter by multiple names (WHERE IN)
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      - description: Search keyword for filtering by name
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      responses:
-        "200":
-          description: Excel file with districts data
-          schema:
-            type: file
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Export districts to Excel
-      tags:
-      - Regency - District
-  /v1/expedition:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a paginated list of expeditions with optional search and
-        filters. Supports multiple filter values for each field. Only returns non-deleted
-        expeditions. Requires 'api.master-data.expedition.view' permission.
-      parameters:
-      - description: 'Page number (default: 1)'
-        in: query
-        name: page
-        type: integer
-      - description: 'Items per page (default: 10)'
-        in: query
-        name: per_page
-        type: integer
-      - description: 'Sort column (allowed: id, expedition_code, expedition_name,
-          address, created_at, updated_at)'
-        in: query
-        name: sort_by
-        type: string
-      - description: 'Sort order: asc or desc (default: desc)'
-        in: query
-        name: sort_order
-        type: string
-      - description: Search keyword (searches in expedition_name, expedition_code,
-          address, and phone numbers from contacts)
-        in: query
-        name: search
-        type: string
-      - collectionFormat: csv
-        description: Filter by expedition codes (multiple values)
-        in: query
-        items:
-          type: string
-        name: expedition_codes
-        type: array
-      - collectionFormat: csv
-        description: Filter by expedition names (multiple values)
-        in: query
-        items:
-          type: string
-        name: expedition_names
-        type: array
-      - collectionFormat: csv
-        description: Filter by addresses (multiple values)
-        in: query
-        items:
-          type: string
-        name: addresses
-        type: array
-      - collectionFormat: csv
-        description: Filter by telp numbers (multiple values)
-        in: query
-        items:
-          type: string
-        name: telp_numbers
-        type: array
-      - collectionFormat: csv
-        description: Filter by phone numbers (multiple values)
-        in: query
-        items:
-          type: string
-        name: phone_numbers
-        type: array
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved expeditions
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginationResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/dto.RespExpeditionIndex'
-                  type: array
-              type: object
-        "400":
-          description: Bad request - invalid query parameters
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get list of expeditions with pagination
-      tags:
-      - Expedition
-    post:
-      consumes:
-      - application/json
-      description: 'Create a new expedition with provided information. Accepts JSON
-        body with telp_numbers (array of objects where area_code optional and phone_number
-        required, contoh: [{&quot;area_code&quot;:&quot;022&quot;,&quot;phone_number&quot;:&quot;1112223355&quot;},
-        {&quot;area_code&quot;:&quot;022&quot;,&quot;phone_number&quot;:&quot;1112223366&quot;}])
-        and phone_numbers arrays. First index of telp_numbers array will automatically
-        become primary telp, and first index of phone_numbers array will automatically
-        become primary hp. Phone numbers can be duplicated across different expeditions.
-        Expedition code is automatically generated by the system. Requires ''api.master-data.expedition.create''
-        permission.'
-      parameters:
-      - description: 'Expedition creation data. Fields: expedition_name (required),
-          address (max 255 chars), telp_numbers (array, first index becomes primary
-          telp), phone_numbers (array, first index becomes primary hp), notes (optional)'
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqCreateExpedition'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully created expedition with full details including
-            contacts
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespExpedition'
-              type: object
-        "400":
-          description: Bad request - validation error or duplicate phone number/expedition
-            name
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new expedition
-      tags:
-      - Expedition
-  /v1/expedition/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Soft delete an existing expedition by ID. The expedition will be
-        marked as deleted (deleted_at is set) but remains in the database. Requires
-        'api.master-data.expedition.delete' permission.
-      parameters:
-      - description: Expedition UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully soft deleted expedition
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Expedition not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Soft delete expedition
-      tags:
-      - Expedition
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a single expedition by its UUID. The response includes
-        full expedition details with all contacts (telp_numbers and phone_numbers
-        arrays). Only returns non-deleted expeditions. Requires 'api.master-data.expedition.view'
-        permission.
-      parameters:
-      - description: Expedition UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved expedition with full details including
-            contacts
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespExpedition'
-              type: object
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Expedition not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get expedition by ID
-      tags:
-      - Expedition
-    put:
-      consumes:
-      - application/json
-      description: 'Update an existing expedition''s information. Accepts JSON body
-        with telp_numbers (array of objects where area_code optional and phone_number
-        required, contoh: [{&quot;area_code&quot;:&quot;022&quot;,&quot;phone_number&quot;:&quot;1112223355&quot;},
-        {&quot;area_code&quot;:&quot;022&quot;,&quot;phone_number&quot;:&quot;1112223366&quot;}])
-        and phone_numbers arrays. First index of telp_numbers array will automatically
-        become primary telp, and first index of phone_numbers array will automatically
-        become primary hp. Phone numbers can be duplicated across different expeditions.
-        Existing contacts will be hard deleted before new ones are created. The response
-        includes full expedition details with all contacts. Requires ''api.master-data.expedition.update''
-        permission.'
-      parameters:
-      - description: Expedition UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: 'Updated expedition data. Fields: expedition_name (required),
-          address (max 255 chars), telp_numbers (array, first index becomes primary
-          telp), phone_numbers (array, first index becomes primary hp), notes (optional)'
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqUpdateExpedition'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully updated expedition with full details including
-            contacts
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespExpedition'
-              type: object
-        "400":
-          description: Bad request - validation error or duplicate phone number
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Expedition not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Update expedition
-      tags:
-      - Expedition
-  /v1/expedition/export:
-    get:
-      consumes:
-      - application/json
-      description: 'Export expeditions to Excel file (.xlsx) with optional search
-        and filter. Same search and filter logic as index but without pagination.
-        Supports multiple filter values for each field. Only exports non-deleted expeditions.
-        Excel file includes: Kode Ekspedisi, Nama Ekspedisi, Alamat, Telp, Phone,
-        Update Date. Requires ''api.master-data.expedition.export'' permission.'
-      parameters:
-      - description: Search keyword (searches in expedition_name, expedition_code,
-          address, and phone numbers from contacts)
-        in: query
-        name: search
-        type: string
-      - collectionFormat: csv
-        description: Filter by expedition codes (multiple values)
-        in: query
-        items:
-          type: string
-        name: expedition_codes
-        type: array
-      - collectionFormat: csv
-        description: Filter by expedition names (multiple values)
-        in: query
-        items:
-          type: string
-        name: expedition_names
-        type: array
-      - collectionFormat: csv
-        description: Filter by addresses (multiple values)
-        in: query
-        items:
-          type: string
-        name: addresses
-        type: array
-      - collectionFormat: csv
-        description: Filter by telp numbers (multiple values)
-        in: query
-        items:
-          type: string
-        name: telp_numbers
-        type: array
-      - collectionFormat: csv
-        description: Filter by phone numbers (multiple values)
-        in: query
-        items:
-          type: string
-        name: phone_numbers
-        type: array
-      produces:
-      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      responses:
-        "200":
-          description: Excel file (expeditions.xlsx) with expeditions data
-          schema:
-            type: file
-        "400":
-          description: Bad request - invalid query parameters
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Export expeditions to Excel
-      tags:
-      - Expedition
-  /v1/group:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a paginated list of goods groups with optional filters
-      parameters:
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Items per page
-        in: query
-        name: per_page
-        type: integer
-      - description: Search keyword
-        in: query
-        name: search
-        type: string
-      - description: Search keyword for filtering by name and group_code
-        in: query
-        name: search
-        type: string
-      - in: query
-        name: sort_by
-        type: string
-      - in: query
-        name: sort_order
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved groups
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginationResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/dto.RespGroupIndex'
-                  type: array
-              type: object
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get list of groups with pagination
-      tags:
-      - Golongan
-    post:
-      consumes:
-      - application/json
-      description: Create a new goods group with provided name
-      parameters:
-      - description: Group creation data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqCreateGroup'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully created group
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespGroup'
-              type: object
-        "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new group
-      tags:
-      - Golongan
-  /v1/group/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete an existing goods group by ID
-      parameters:
-      - description: Group UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully deleted group
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Group not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete group
-      tags:
-      - Golongan
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a single goods group by its ID
-      parameters:
-      - description: Group UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved group
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespGroup'
-              type: object
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Group not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get group by ID
-      tags:
-      - Golongan
-    put:
-      consumes:
-      - application/json
-      description: Update an existing goods group's information
-      parameters:
-      - description: Group UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Updated group data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqUpdateGroup'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully updated group
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespGroup'
-              type: object
-        "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Group not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Update group
-      tags:
-      - Golongan
-  /v1/group/export:
-    get:
-      consumes:
-      - application/json
-      description: Export goods groups to Excel file (.xlsx) with optional search
-        and filter. Same search and filter logic as index but without pagination.
-      parameters:
-      - description: Search keyword for filtering by name and group_code
-        in: query
-        name: search
-        type: string
-      - in: query
-        name: sort_by
-        type: string
-      - in: query
-        name: sort_order
-        type: string
-      produces:
-      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      responses:
-        "200":
-          description: Excel file with groups data
-          schema:
-            type: file
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Export groups to Excel
-      tags:
-      - Golongan
+      - Course
   /v1/parameter:
     get:
       consumes:
@@ -3114,245 +1331,6 @@ paths:
       summary: Export parameters to Excel
       tags:
       - Parameter
-  /v1/province:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a paginated list of provinces with optional filters
-      parameters:
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Items per page
-        in: query
-        name: per_page
-        type: integer
-      - description: Search keyword
-        in: query
-        name: search
-        type: string
-      - description: Search keyword for filtering by name
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved provinces
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginationResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/dto.RespProvinceIndex'
-                  type: array
-              type: object
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get list of provinces with pagination
-      tags:
-      - Regency - Province
-    post:
-      consumes:
-      - application/json
-      description: Create a new province with provided name
-      parameters:
-      - description: Province creation data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqCreateProvince'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully created province
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespProvince'
-              type: object
-        "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new province
-      tags:
-      - Regency - Province
-  /v1/province/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete an existing province by ID
-      parameters:
-      - description: Province UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully deleted province
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Province not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete province
-      tags:
-      - Regency - Province
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a single province by its ID
-      parameters:
-      - description: Province UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved province
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespProvince'
-              type: object
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Province not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get province by ID
-      tags:
-      - Regency - Province
-    put:
-      consumes:
-      - application/json
-      description: Update an existing province's information
-      parameters:
-      - description: Province UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Updated province data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqUpdateProvince'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully updated province
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespProvince'
-              type: object
-        "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Province not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Update province
-      tags:
-      - Regency - Province
-  /v1/province/export:
-    get:
-      consumes:
-      - application/json
-      description: Export provinces to Excel file (.xlsx) with optional search and
-        filter
-      parameters:
-      - description: Search keyword
-        in: query
-        name: search
-        type: string
-      - description: Search keyword for filtering by name
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      responses:
-        "200":
-          description: Excel file with provinces data
-          schema:
-            type: file
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Export provinces to Excel
-      tags:
-      - Regency - Province
   /v1/role-management/role:
     get:
       consumes:
@@ -3680,931 +1658,6 @@ paths:
       summary: Get all permission groups grouped by module
       tags:
       - Role Management
-  /v1/sub-group:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a paginated list of sub-groups with optional search and
-        filters. Supports multiple filter values for subgroup_code, name, and groups_id.
-        Subgroup codes are in 2-digit string format (e.g., "01", "02", "05", "10").
-        Only returns non-deleted sub-groups. Supports sorting by DTO field names (e.g.,
-        subgroup_code, name, groups_name, created_at, updated_at).
-      parameters:
-      - description: 'Page number (default: 1)'
-        in: query
-        name: page
-        type: integer
-      - description: 'Items per page (default: 10)'
-        in: query
-        name: per_page
-        type: integer
-      - description: Sort by field (e.g., subgroup_code, name, groups_name, created_at,
-          updated_at)
-        in: query
-        name: sort_by
-        type: string
-      - description: 'Sort order (ASC or DESC, default: DESC)'
-        in: query
-        name: sort_order
-        type: string
-      - description: Search keyword (searches in subgroup_code and name)
-        in: query
-        name: search
-        type: string
-      - collectionFormat: csv
-        description: 'Filter by subgroup codes (multiple values, format: '
-        in: query
-        items:
-          type: string
-        name: subgroup_codes
-        type: array
-      - collectionFormat: csv
-        description: Filter by names (multiple values)
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      - collectionFormat: csv
-        description: Filter by goods group IDs (multiple values, UUIDs)
-        in: query
-        items:
-          type: string
-        name: groups_ids
-        type: array
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved sub-groups
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginationResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/dto.RespSubGroupIndex'
-                  type: array
-              type: object
-        "400":
-          description: Bad request - invalid query parameters
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get list of sub-groups with pagination
-      tags:
-      - Sub Golongan
-    post:
-      consumes:
-      - application/json
-      description: Create a new sub-group with provided groups_id and name. Name must
-        be unique within the same groups. Subgroup code is automatically generated
-        by the database trigger with 2-digit format (e.g., "01", "02", "05", "10").
-        The code is generated sequentially based on the sequence.
-      parameters:
-      - description: 'Sub-group creation data. Fields: groups_id (required, UUID),
-          name (required, max 255 chars, uppercase letters only)'
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqCreateSubGroup'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully created sub-group with auto-generated subgroup_code
-            in 2-digit format
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespSubGroup'
-              type: object
-        "400":
-          description: Bad request - validation error or duplicate name in groups
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new sub-group
-      tags:
-      - Sub Golongan
-  /v1/sub-group/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Soft delete an existing sub-group by ID. The sub-group will be
-        marked as deleted (deleted_at is set) but remains in the database. Requires
-        'api.master-data.sub-group.delete' permission.
-      parameters:
-      - description: Sub-group UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully soft deleted sub-group
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Sub-group not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Soft delete sub-group
-      tags:
-      - Sub Golongan
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a single sub-group by its UUID. The response includes
-        subgroup_code in 2-digit string format (e.g., "01", "02", "05", "10") and
-        groups_name to identify which goods group this sub-group belongs to. Only
-        returns non-deleted sub-groups.
-      parameters:
-      - description: Sub-group UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved sub-group with subgroup_code in 2-digit
-            format and groups_name
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespSubGroup'
-              type: object
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Sub-group not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get sub-group by ID
-      tags:
-      - Sub Golongan
-    put:
-      consumes:
-      - application/json
-      description: Update an existing sub-group's information. Name must be unique
-        within the same groups. Subgroup code cannot be updated as it is auto-generated.
-        The response includes the current subgroup_code in 2-digit format.
-      parameters:
-      - description: Sub-group UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: 'Updated sub-group data. Fields: groups_id (required, UUID),
-          name (required, max 255 chars, uppercase letters only). Note: subgroup_code
-          is read-only and cannot be updated.'
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqUpdateSubGroup'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully updated sub-group with subgroup_code in 2-digit
-            format
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespSubGroup'
-              type: object
-        "400":
-          description: Bad request - validation error or duplicate name in groups
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Sub-group not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Update sub-group
-      tags:
-      - Sub Golongan
-  /v1/sub-group/export:
-    get:
-      consumes:
-      - application/json
-      description: 'Export sub-groups to Excel file (.xlsx) with optional search and
-        filter. Same search and filter logic as index but without pagination. Supports
-        multiple filter values for each field. Only exports non-deleted sub-groups.
-        Excel file includes: Kode Sub Golongan (2-digit format like "01", "02"), Nama
-        Sub Golongan, Nama Golongan, Updated Date. Requires ''sub-group.export'' permission.'
-      parameters:
-      - description: Search keyword (searches in subgroup_code and name)
-        in: query
-        name: search
-        type: string
-      - collectionFormat: csv
-        description: 'Filter by subgroup codes (multiple values, format: '
-        in: query
-        items:
-          type: string
-        name: subgroup_codes
-        type: array
-      - collectionFormat: csv
-        description: Filter by names (multiple values)
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      - collectionFormat: csv
-        description: Filter by goods group IDs (multiple values, UUIDs)
-        in: query
-        items:
-          type: string
-        name: groups_ids
-        type: array
-      - description: Sort by field (e.g., subgroup_code, name, groups_name, created_at,
-          updated_at)
-        in: query
-        name: sort_by
-        type: string
-      - description: Sort order (ASC or DESC)
-        in: query
-        name: sort_order
-        type: string
-      produces:
-      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      responses:
-        "200":
-          description: Excel file (sub-groups.xlsx) with sub-groups data including
-            subgroup_code in 2-digit format
-          schema:
-            type: file
-        "400":
-          description: Bad request - invalid query parameters
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Export sub-groups to Excel
-      tags:
-      - Sub Golongan
-  /v1/subdistrict:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a paginated list of subdistricts with optional filters
-      parameters:
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Items per page
-        in: query
-        name: per_page
-        type: integer
-      - description: Search keyword
-        in: query
-        name: search
-        type: string
-      - description: Filter by district_id
-        in: query
-        name: district_id
-        type: string
-      - collectionFormat: csv
-        description: Filter by multiple names (WHERE IN)
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      - description: Search keyword for filtering by name
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved subdistricts
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginationResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/dto.RespSubdistrictIndex'
-                  type: array
-              type: object
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get list of subdistricts with pagination
-      tags:
-      - Regency - Subdistrict
-    post:
-      consumes:
-      - application/json
-      description: Create a new subdistrict with provided district_id and name
-      parameters:
-      - description: Subdistrict creation data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqCreateSubdistrict'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully created subdistrict
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespSubdistrict'
-              type: object
-        "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new subdistrict
-      tags:
-      - Regency - Subdistrict
-  /v1/subdistrict/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete an existing subdistrict by ID
-      parameters:
-      - description: Subdistrict UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully deleted subdistrict
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Subdistrict not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete subdistrict
-      tags:
-      - Regency - Subdistrict
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a single subdistrict by its ID
-      parameters:
-      - description: Subdistrict UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved subdistrict
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespSubdistrict'
-              type: object
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Subdistrict not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get subdistrict by ID
-      tags:
-      - Regency - Subdistrict
-    put:
-      consumes:
-      - application/json
-      description: Update an existing subdistrict's information
-      parameters:
-      - description: Subdistrict UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Updated subdistrict data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqUpdateSubdistrict'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully updated subdistrict
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespSubdistrict'
-              type: object
-        "400":
-          description: Bad request - validation error
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Subdistrict not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Update subdistrict
-      tags:
-      - Regency - Subdistrict
-  /v1/subdistrict/export:
-    get:
-      consumes:
-      - application/json
-      description: Export subdistricts to Excel file (.xlsx) with optional search
-        and filter
-      parameters:
-      - description: Search keyword
-        in: query
-        name: search
-        type: string
-      - description: Filter by district_id
-        in: query
-        name: district_id
-        type: string
-      - collectionFormat: csv
-        description: Filter by multiple names (WHERE IN)
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      - description: Search keyword for filtering by name
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      responses:
-        "200":
-          description: Excel file with subdistricts data
-          schema:
-            type: file
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Export subdistricts to Excel
-      tags:
-      - Regency - Subdistrict
-  /v1/type:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a paginated list of types with optional search and filters.
-        Supports multiple filter values for type_code, subgroup_id, and name. Only
-        returns non-deleted types. Requires 'api.master-data.type.view' permission.
-      parameters:
-      - description: 'Page number (default: 1)'
-        in: query
-        name: page
-        type: integer
-      - description: 'Items per page (default: 10)'
-        in: query
-        name: per_page
-        type: integer
-      - description: 'Sort column (allowed: id, subgroup_id, type_code, name, created_at,
-          updated_at)'
-        in: query
-        name: sort_by
-        type: string
-      - description: 'Sort order: asc or desc (default: desc)'
-        in: query
-        name: sort_order
-        type: string
-      - description: Search keyword (searches in type_code and name)
-        in: query
-        name: search
-        type: string
-      - collectionFormat: csv
-        description: Filter by type codes (multiple values)
-        in: query
-        items:
-          type: string
-        name: type_codes
-        type: array
-      - collectionFormat: csv
-        description: Filter by subgroup IDs (multiple values, UUIDs)
-        in: query
-        items:
-          type: string
-        name: subgroup_ids
-        type: array
-      - collectionFormat: csv
-        description: Filter by group IDs (multiple values, UUIDs)
-        in: query
-        items:
-          type: string
-        name: group_ids
-        type: array
-      - collectionFormat: csv
-        description: Filter by names (multiple values)
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved types
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginationResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/dto.RespTypeIndex'
-                  type: array
-              type: object
-        "400":
-          description: Bad request - invalid query parameters
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get list of types with pagination
-      tags:
-      - Jenis
-    post:
-      consumes:
-      - application/json
-      description: Create a new type with provided data. Type code is automatically
-        generated by the system. Requires 'api.master-data.type.create' permission.
-      parameters:
-      - description: 'Type creation data. Fields: subgroup_id (required, UUID), name
-          (required, max 255 chars)'
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqCreateType'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully created type with auto-generated type_code
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespType'
-              type: object
-        "400":
-          description: Bad request - validation error or duplicate name in subgroup
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new type
-      tags:
-      - Jenis
-  /v1/type/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Soft delete an existing type by ID. The type will be marked as
-        deleted (deleted_at is set) but remains in the database. Requires 'api.master-data.type.delete'
-        permission.
-      parameters:
-      - description: Type UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully soft deleted type
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Type not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Soft delete type
-      tags:
-      - Jenis
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a single type by its UUID. The response includes subgroup_name
-        to identify which sub-group this type belongs to. Only returns non-deleted
-        types. Requires 'api.master-data.type.view' permission.
-      parameters:
-      - description: Type UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully retrieved type with subgroup_name
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespType'
-              type: object
-        "400":
-          description: Bad request - invalid UUID
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Type not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Get type by ID
-      tags:
-      - Jenis
-    put:
-      consumes:
-      - application/json
-      description: Update an existing type's information. Type code cannot be updated.
-        Requires 'api.master-data.type.update' permission.
-      parameters:
-      - description: Type UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: 'Updated type data. Fields: subgroup_id (required, UUID), name
-          (required, max 255 chars)'
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.ReqUpdateType'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully updated type
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.NonPaginationResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.RespType'
-              type: object
-        "400":
-          description: Bad request - validation error or duplicate name in subgroup
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "404":
-          description: Type not found
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Update type
-      tags:
-      - Jenis
-  /v1/type/export:
-    get:
-      consumes:
-      - application/json
-      description: Export types to Excel file (.xlsx) with optional search and filter.
-        Same search and filter logic as index but without pagination. Supports multiple
-        filter values for type_code, subgroup_id, and name. Requires 'api.master-data.type.export'
-        permission.
-      parameters:
-      - description: Search keyword (searches in type_code and name)
-        in: query
-        name: search
-        type: string
-      - collectionFormat: csv
-        description: Filter by type codes (multiple values)
-        in: query
-        items:
-          type: string
-        name: type_codes
-        type: array
-      - collectionFormat: csv
-        description: Filter by subgroup IDs (multiple values, UUIDs)
-        in: query
-        items:
-          type: string
-        name: subgroup_ids
-        type: array
-      - collectionFormat: csv
-        description: Filter by names (multiple values)
-        in: query
-        items:
-          type: string
-        name: names
-        type: array
-      produces:
-      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      responses:
-        "200":
-          description: Excel file (types.xlsx) with types data
-          schema:
-            type: file
-        "400":
-          description: Bad request - invalid query parameters
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-        "403":
-          description: Forbidden - insufficient permissions
-          schema:
-            $ref: '#/definitions/response.NonPaginationResponse'
-      security:
-      - BearerAuth: []
-      summary: Export types to Excel
-      tags:
-      - Jenis
   /v1/user-management/register:
     post:
       consumes:

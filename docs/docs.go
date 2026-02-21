@@ -374,14 +374,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/backing": {
+        "/v1/course": {
             "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a paginated list of backings with optional search and filters. Supports multiple filter values for backing_code, name, and type_id.",
+                "description": "Retrieve a paginated list of courses with optional filtering",
                 "consumes": [
                     "application/json"
                 ],
@@ -389,37 +384,39 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Backing"
+                    "Course"
                 ],
-                "summary": "Get list of backings with pagination",
+                "summary": "Get paginated list of courses",
                 "parameters": [
                     {
                         "type": "integer",
+                        "default": 1,
                         "description": "Page number",
                         "name": "page",
                         "in": "query"
                     },
                     {
                         "type": "integer",
+                        "default": 10,
                         "description": "Items per page",
                         "name": "per_page",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "Sort column (allowed: id, type_id, backing_code, name, created_at, updated_at)",
+                        "description": "Sort column",
                         "name": "sort_by",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "Sort order (asc or desc)",
+                        "description": "Sort order (asc/desc)",
                         "name": "sort_order",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "Search keyword (searches in backing_code and name)",
+                        "description": "Search query",
                         "name": "search",
                         "in": "query"
                     },
@@ -429,8 +426,7 @@ const docTemplate = `{
                             "type": "string"
                         },
                         "collectionFormat": "csv",
-                        "description": "Filter by backing codes (multiple values)",
-                        "name": "backing_codes",
+                        "name": "lang_ids",
                         "in": "query"
                     },
                     {
@@ -439,53 +435,11 @@ const docTemplate = `{
                             "type": "string"
                         },
                         "collectionFormat": "csv",
-                        "description": "Filter by names (multiple values)",
-                        "name": "names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by type IDs (multiple values, UUID format)",
-                        "name": "type_ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Multiple values",
-                        "name": "backing_codes",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by goodGroup IDs (multiple values, UUIDs as strings)",
-                        "name": "group_ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Multiple values",
-                        "name": "names",
+                        "name": "level_ids",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "Search keyword for filtering by backing_code, name",
                         "name": "search",
                         "in": "query"
                     },
@@ -505,24 +459,13 @@ const docTemplate = `{
                             "type": "string"
                         },
                         "collectionFormat": "csv",
-                        "description": "Filter by subgroup IDs (multiple values, UUIDs as strings)",
-                        "name": "subgroup_ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Multiple values",
-                        "name": "type_ids",
+                        "name": "topic_ids",
                         "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successfully retrieved backings",
+                        "description": "OK",
                         "schema": {
                             "allOf": [
                                 {
@@ -534,7 +477,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/dto.RespBackingIndex"
+                                                "$ref": "#/definitions/dto.RespCourseIndex"
                                             }
                                         }
                                     }
@@ -543,13 +486,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/response.NonPaginationResponse"
                         }
@@ -562,31 +499,38 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Create a new backing with provided type_id and name",
+                "description": "Create a course with optional thumbnail upload",
                 "consumes": [
-                    "application/json"
+                    "application/json",
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Backing"
+                    "Course"
                 ],
-                "summary": "Create a new backing",
+                "summary": "Create course",
                 "parameters": [
                     {
-                        "description": "Backing creation data",
-                        "name": "request",
+                        "description": "Course payload",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ReqCreateBacking"
+                            "$ref": "#/definitions/dto.ReqCreateCourse"
                         }
+                    },
+                    {
+                        "type": "file",
+                        "description": "Thumbnail file",
+                        "name": "thumbnail",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successfully created backing",
+                        "description": "OK",
                         "schema": {
                             "allOf": [
                                 {
@@ -596,7 +540,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/dto.RespBacking"
+                                            "$ref": "#/definitions/dto.RespCourse"
                                         }
                                     }
                                 }
@@ -604,13 +548,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/response.NonPaginationResponse"
                         }
@@ -618,172 +556,20 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/backing/export": {
+        "/v1/course/{id}": {
             "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Export backings to Excel file (.xlsx) with optional search and filter. Same search and filter logic as index but without pagination. Supports multiple filter values for backing_code, name, and type_id.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                ],
-                "tags": [
-                    "Backing"
-                ],
-                "summary": "Export backings to Excel",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Search keyword (searches in backing_code and name)",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by backing codes (multiple values)",
-                        "name": "backing_codes",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by names (multiple values)",
-                        "name": "names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by type IDs (multiple values, UUID format)",
-                        "name": "type_ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Multiple values",
-                        "name": "backing_codes",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by goodGroup IDs (multiple values, UUIDs as strings)",
-                        "name": "group_ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Multiple values",
-                        "name": "names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword for filtering by backing_code, name",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort_by",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort_order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by subgroup IDs (multiple values, UUIDs as strings)",
-                        "name": "subgroup_ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Multiple values",
-                        "name": "type_ids",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Excel file with backings data",
-                        "schema": {
-                            "type": "file"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/backing/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a single backing by its ID",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Retrieve course detail and its parameters",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Backing"
+                    "Course"
                 ],
-                "summary": "Get backing by ID",
+                "summary": "Get course by ID",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Backing UUID",
+                        "description": "Course ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -791,7 +577,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successfully retrieved backing",
+                        "description": "OK",
                         "schema": {
                             "allOf": [
                                 {
@@ -801,7 +587,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/dto.RespBacking"
+                                            "$ref": "#/definitions/dto.RespCourse"
                                         }
                                     }
                                 }
@@ -809,19 +595,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Backing not found",
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/response.NonPaginationResponse"
                         }
@@ -834,38 +608,45 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Update an existing backing's information",
+                "description": "Update a course with optional thumbnail upload",
                 "consumes": [
-                    "application/json"
+                    "application/json",
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Backing"
+                    "Course"
                 ],
-                "summary": "Update backing",
+                "summary": "Update course",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Backing UUID",
+                        "description": "Course ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Updated backing data",
-                        "name": "request",
+                        "description": "Course payload",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ReqUpdateBacking"
+                            "$ref": "#/definitions/dto.ReqUpdateCourse"
                         }
+                    },
+                    {
+                        "type": "file",
+                        "description": "Thumbnail file",
+                        "name": "thumbnail",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successfully updated backing",
+                        "description": "OK",
                         "schema": {
                             "allOf": [
                                 {
@@ -875,7 +656,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/dto.RespBacking"
+                                            "$ref": "#/definitions/dto.RespCourse"
                                         }
                                     }
                                 }
@@ -883,19 +664,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Backing not found",
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/response.NonPaginationResponse"
                         }
@@ -908,21 +677,18 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Delete an existing backing by ID",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Delete a course by ID",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Backing"
+                    "Course"
                 ],
-                "summary": "Delete backing",
+                "summary": "Delete course",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Backing UUID",
+                        "description": "Course ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -930,1862 +696,13 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successfully deleted backing",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/response.NonPaginationResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Backing not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/city": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a paginated list of cities with optional filters",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - City"
-                ],
-                "summary": "Get list of cities with pagination",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Items per page",
-                        "name": "per_page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by multiple names (WHERE IN)",
-                        "name": "names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by province_id",
-                        "name": "province_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword for filtering by name",
-                        "name": "search",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved cities",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.PaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/dto.RespCityIndex"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new city with provided province_id, name, dan optional area_code",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - City"
-                ],
-                "summary": "Create a new city",
-                "parameters": [
-                    {
-                        "description": "City creation data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqCreateCity"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully created city",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespCity"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/city/area-codes": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve distinct area_code values from city table with optional search by area_code",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - City"
-                ],
-                "summary": "Get distinct city area codes",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Search area_code",
-                        "name": "search",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved area codes",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/dto.RespCityAreaCode"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/city/export": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Export cities to Excel file (.xlsx) with optional search and filter",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                ],
-                "tags": [
-                    "Regency - City"
-                ],
-                "summary": "Export cities to Excel",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Search keyword",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by multiple names (WHERE IN)",
-                        "name": "names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by province_id",
-                        "name": "province_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword for filtering by name",
-                        "name": "search",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Excel file with cities data",
-                        "schema": {
-                            "type": "file"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/city/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a single city by its ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - City"
-                ],
-                "summary": "Get city by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "City UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved city",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespCity"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "City not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Update an existing city's information termasuk area_code",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - City"
-                ],
-                "summary": "Update city",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "City UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Updated city data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqUpdateCity"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully updated city",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespCity"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "City not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Delete an existing city by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - City"
-                ],
-                "summary": "Delete city",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "City UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully deleted city",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "City not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/district": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a paginated list of districts with optional filters",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - District"
-                ],
-                "summary": "Get list of districts with pagination",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Items per page",
-                        "name": "per_page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by city_id",
-                        "name": "city_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by multiple names (WHERE IN)",
-                        "name": "names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword for filtering by name",
-                        "name": "search",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved districts",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.PaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/dto.RespDistrictIndex"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new district with provided city_id and name",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - District"
-                ],
-                "summary": "Create a new district",
-                "parameters": [
-                    {
-                        "description": "District creation data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqCreateDistrict"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully created district",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespDistrict"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/district/export": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Export districts to Excel file (.xlsx) with optional search and filter",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                ],
-                "tags": [
-                    "Regency - District"
-                ],
-                "summary": "Export districts to Excel",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Search keyword",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by city_id",
-                        "name": "city_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by multiple names (WHERE IN)",
-                        "name": "names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword for filtering by name",
-                        "name": "search",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Excel file with districts data",
-                        "schema": {
-                            "type": "file"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/district/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a single district by its ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - District"
-                ],
-                "summary": "Get district by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "District UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved district",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespDistrict"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "District not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Update an existing district's information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - District"
-                ],
-                "summary": "Update district",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "District UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Updated district data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqUpdateDistrict"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully updated district",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespDistrict"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "District not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Delete an existing district by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - District"
-                ],
-                "summary": "Delete district",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "District UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully deleted district",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "District not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/expedition": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a paginated list of expeditions with optional search and filters. Supports multiple filter values for each field. Only returns non-deleted expeditions. Requires 'api.master-data.expedition.view' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Expedition"
-                ],
-                "summary": "Get list of expeditions with pagination",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number (default: 1)",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Items per page (default: 10)",
-                        "name": "per_page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Sort column (allowed: id, expedition_code, expedition_name, address, created_at, updated_at)",
-                        "name": "sort_by",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Sort order: asc or desc (default: desc)",
-                        "name": "sort_order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword (searches in expedition_name, expedition_code, address, and phone numbers from contacts)",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by expedition codes (multiple values)",
-                        "name": "expedition_codes",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by expedition names (multiple values)",
-                        "name": "expedition_names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by addresses (multiple values)",
-                        "name": "addresses",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by telp numbers (multiple values)",
-                        "name": "telp_numbers",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by phone numbers (multiple values)",
-                        "name": "phone_numbers",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved expeditions",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.PaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/dto.RespExpeditionIndex"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid query parameters",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new expedition with provided information. Accepts JSON body with telp_numbers (array of objects where area_code optional and phone_number required, contoh: [{\u0026quot;area_code\u0026quot;:\u0026quot;022\u0026quot;,\u0026quot;phone_number\u0026quot;:\u0026quot;1112223355\u0026quot;}, {\u0026quot;area_code\u0026quot;:\u0026quot;022\u0026quot;,\u0026quot;phone_number\u0026quot;:\u0026quot;1112223366\u0026quot;}]) and phone_numbers arrays. First index of telp_numbers array will automatically become primary telp, and first index of phone_numbers array will automatically become primary hp. Phone numbers can be duplicated across different expeditions. Expedition code is automatically generated by the system. Requires 'api.master-data.expedition.create' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Expedition"
-                ],
-                "summary": "Create a new expedition",
-                "parameters": [
-                    {
-                        "description": "Expedition creation data. Fields: expedition_name (required), address (max 255 chars), telp_numbers (array, first index becomes primary telp), phone_numbers (array, first index becomes primary hp), notes (optional)",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqCreateExpedition"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully created expedition with full details including contacts",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespExpedition"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error or duplicate phone number/expedition name",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/expedition/export": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Export expeditions to Excel file (.xlsx) with optional search and filter. Same search and filter logic as index but without pagination. Supports multiple filter values for each field. Only exports non-deleted expeditions. Excel file includes: Kode Ekspedisi, Nama Ekspedisi, Alamat, Telp, Phone, Update Date. Requires 'api.master-data.expedition.export' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                ],
-                "tags": [
-                    "Expedition"
-                ],
-                "summary": "Export expeditions to Excel",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Search keyword (searches in expedition_name, expedition_code, address, and phone numbers from contacts)",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by expedition codes (multiple values)",
-                        "name": "expedition_codes",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by expedition names (multiple values)",
-                        "name": "expedition_names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by addresses (multiple values)",
-                        "name": "addresses",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by telp numbers (multiple values)",
-                        "name": "telp_numbers",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by phone numbers (multiple values)",
-                        "name": "phone_numbers",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Excel file (expeditions.xlsx) with expeditions data",
-                        "schema": {
-                            "type": "file"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid query parameters",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/expedition/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a single expedition by its UUID. The response includes full expedition details with all contacts (telp_numbers and phone_numbers arrays). Only returns non-deleted expeditions. Requires 'api.master-data.expedition.view' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Expedition"
-                ],
-                "summary": "Get expedition by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Expedition UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved expedition with full details including contacts",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespExpedition"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Expedition not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Update an existing expedition's information. Accepts JSON body with telp_numbers (array of objects where area_code optional and phone_number required, contoh: [{\u0026quot;area_code\u0026quot;:\u0026quot;022\u0026quot;,\u0026quot;phone_number\u0026quot;:\u0026quot;1112223355\u0026quot;}, {\u0026quot;area_code\u0026quot;:\u0026quot;022\u0026quot;,\u0026quot;phone_number\u0026quot;:\u0026quot;1112223366\u0026quot;}]) and phone_numbers arrays. First index of telp_numbers array will automatically become primary telp, and first index of phone_numbers array will automatically become primary hp. Phone numbers can be duplicated across different expeditions. Existing contacts will be hard deleted before new ones are created. The response includes full expedition details with all contacts. Requires 'api.master-data.expedition.update' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Expedition"
-                ],
-                "summary": "Update expedition",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Expedition UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Updated expedition data. Fields: expedition_name (required), address (max 255 chars), telp_numbers (array, first index becomes primary telp), phone_numbers (array, first index becomes primary hp), notes (optional)",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqUpdateExpedition"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully updated expedition with full details including contacts",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespExpedition"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error or duplicate phone number",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Expedition not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Soft delete an existing expedition by ID. The expedition will be marked as deleted (deleted_at is set) but remains in the database. Requires 'api.master-data.expedition.delete' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Expedition"
-                ],
-                "summary": "Soft delete expedition",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Expedition UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully soft deleted expedition",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Expedition not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/group": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a paginated list of goods groups with optional filters",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Golongan"
-                ],
-                "summary": "Get list of groups with pagination",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Items per page",
-                        "name": "per_page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword for filtering by name and group_code",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort_by",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort_order",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved groups",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.PaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/dto.RespGroupIndex"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new goods group with provided name",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Golongan"
-                ],
-                "summary": "Create a new group",
-                "parameters": [
-                    {
-                        "description": "Group creation data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqCreateGroup"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully created group",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespGroup"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/group/export": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Export goods groups to Excel file (.xlsx) with optional search and filter. Same search and filter logic as index but without pagination.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                ],
-                "tags": [
-                    "Golongan"
-                ],
-                "summary": "Export groups to Excel",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Search keyword for filtering by name and group_code",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort_by",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort_order",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Excel file with groups data",
-                        "schema": {
-                            "type": "file"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/group/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a single goods group by its ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Golongan"
-                ],
-                "summary": "Get group by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Group UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved group",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespGroup"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Group not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Update an existing goods group's information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Golongan"
-                ],
-                "summary": "Update group",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Group UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Updated group data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqUpdateGroup"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully updated group",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespGroup"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Group not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Delete an existing goods group by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Golongan"
-                ],
-                "summary": "Delete group",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Group UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully deleted group",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Group not found",
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/response.NonPaginationResponse"
                         }
@@ -3204,396 +1121,6 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Parameter not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/province": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a paginated list of provinces with optional filters",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - Province"
-                ],
-                "summary": "Get list of provinces with pagination",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Items per page",
-                        "name": "per_page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword for filtering by name",
-                        "name": "search",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved provinces",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.PaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/dto.RespProvinceIndex"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new province with provided name",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - Province"
-                ],
-                "summary": "Create a new province",
-                "parameters": [
-                    {
-                        "description": "Province creation data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqCreateProvince"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully created province",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespProvince"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/province/export": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Export provinces to Excel file (.xlsx) with optional search and filter",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                ],
-                "tags": [
-                    "Regency - Province"
-                ],
-                "summary": "Export provinces to Excel",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Search keyword",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword for filtering by name",
-                        "name": "search",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Excel file with provinces data",
-                        "schema": {
-                            "type": "file"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/province/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a single province by its ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - Province"
-                ],
-                "summary": "Get province by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Province UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved province",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespProvince"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Province not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Update an existing province's information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - Province"
-                ],
-                "summary": "Update province",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Province UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Updated province data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqUpdateProvince"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully updated province",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespProvince"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Province not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Delete an existing province by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - Province"
-                ],
-                "summary": "Delete province",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Province UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully deleted province",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Province not found",
                         "schema": {
                             "$ref": "#/definitions/response.NonPaginationResponse"
                         }
@@ -4137,1422 +1664,6 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Role not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/sub-group": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a paginated list of sub-groups with optional search and filters. Supports multiple filter values for subgroup_code, name, and groups_id. Subgroup codes are in 2-digit string format (e.g., \"01\", \"02\", \"05\", \"10\"). Only returns non-deleted sub-groups. Supports sorting by DTO field names (e.g., subgroup_code, name, groups_name, created_at, updated_at).",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sub Golongan"
-                ],
-                "summary": "Get list of sub-groups with pagination",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number (default: 1)",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Items per page (default: 10)",
-                        "name": "per_page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Sort by field (e.g., subgroup_code, name, groups_name, created_at, updated_at)",
-                        "name": "sort_by",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Sort order (ASC or DESC, default: DESC)",
-                        "name": "sort_order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword (searches in subgroup_code and name)",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by subgroup codes (multiple values, format: ",
-                        "name": "subgroup_codes",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by names (multiple values)",
-                        "name": "names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by goods group IDs (multiple values, UUIDs)",
-                        "name": "groups_ids",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved sub-groups",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.PaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/dto.RespSubGroupIndex"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid query parameters",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new sub-group with provided groups_id and name. Name must be unique within the same groups. Subgroup code is automatically generated by the database trigger with 2-digit format (e.g., \"01\", \"02\", \"05\", \"10\"). The code is generated sequentially based on the sequence.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sub Golongan"
-                ],
-                "summary": "Create a new sub-group",
-                "parameters": [
-                    {
-                        "description": "Sub-group creation data. Fields: groups_id (required, UUID), name (required, max 255 chars, uppercase letters only)",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqCreateSubGroup"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully created sub-group with auto-generated subgroup_code in 2-digit format",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespSubGroup"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error or duplicate name in groups",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/sub-group/export": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Export sub-groups to Excel file (.xlsx) with optional search and filter. Same search and filter logic as index but without pagination. Supports multiple filter values for each field. Only exports non-deleted sub-groups. Excel file includes: Kode Sub Golongan (2-digit format like \"01\", \"02\"), Nama Sub Golongan, Nama Golongan, Updated Date. Requires 'sub-group.export' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                ],
-                "tags": [
-                    "Sub Golongan"
-                ],
-                "summary": "Export sub-groups to Excel",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Search keyword (searches in subgroup_code and name)",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by subgroup codes (multiple values, format: ",
-                        "name": "subgroup_codes",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by names (multiple values)",
-                        "name": "names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by goods group IDs (multiple values, UUIDs)",
-                        "name": "groups_ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Sort by field (e.g., subgroup_code, name, groups_name, created_at, updated_at)",
-                        "name": "sort_by",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Sort order (ASC or DESC)",
-                        "name": "sort_order",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Excel file (sub-groups.xlsx) with sub-groups data including subgroup_code in 2-digit format",
-                        "schema": {
-                            "type": "file"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid query parameters",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/sub-group/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a single sub-group by its UUID. The response includes subgroup_code in 2-digit string format (e.g., \"01\", \"02\", \"05\", \"10\") and groups_name to identify which goods group this sub-group belongs to. Only returns non-deleted sub-groups.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sub Golongan"
-                ],
-                "summary": "Get sub-group by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Sub-group UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved sub-group with subgroup_code in 2-digit format and groups_name",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespSubGroup"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Sub-group not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Update an existing sub-group's information. Name must be unique within the same groups. Subgroup code cannot be updated as it is auto-generated. The response includes the current subgroup_code in 2-digit format.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sub Golongan"
-                ],
-                "summary": "Update sub-group",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Sub-group UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Updated sub-group data. Fields: groups_id (required, UUID), name (required, max 255 chars, uppercase letters only). Note: subgroup_code is read-only and cannot be updated.",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqUpdateSubGroup"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully updated sub-group with subgroup_code in 2-digit format",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespSubGroup"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error or duplicate name in groups",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Sub-group not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Soft delete an existing sub-group by ID. The sub-group will be marked as deleted (deleted_at is set) but remains in the database. Requires 'api.master-data.sub-group.delete' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sub Golongan"
-                ],
-                "summary": "Soft delete sub-group",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Sub-group UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully soft deleted sub-group",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Sub-group not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/subdistrict": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a paginated list of subdistricts with optional filters",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - Subdistrict"
-                ],
-                "summary": "Get list of subdistricts with pagination",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Items per page",
-                        "name": "per_page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by district_id",
-                        "name": "district_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by multiple names (WHERE IN)",
-                        "name": "names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword for filtering by name",
-                        "name": "search",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved subdistricts",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.PaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/dto.RespSubdistrictIndex"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new subdistrict with provided district_id and name",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - Subdistrict"
-                ],
-                "summary": "Create a new subdistrict",
-                "parameters": [
-                    {
-                        "description": "Subdistrict creation data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqCreateSubdistrict"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully created subdistrict",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespSubdistrict"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/subdistrict/export": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Export subdistricts to Excel file (.xlsx) with optional search and filter",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                ],
-                "tags": [
-                    "Regency - Subdistrict"
-                ],
-                "summary": "Export subdistricts to Excel",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Search keyword",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by district_id",
-                        "name": "district_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by multiple names (WHERE IN)",
-                        "name": "names",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword for filtering by name",
-                        "name": "search",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Excel file with subdistricts data",
-                        "schema": {
-                            "type": "file"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/subdistrict/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a single subdistrict by its ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - Subdistrict"
-                ],
-                "summary": "Get subdistrict by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Subdistrict UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved subdistrict",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespSubdistrict"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Subdistrict not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Update an existing subdistrict's information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - Subdistrict"
-                ],
-                "summary": "Update subdistrict",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Subdistrict UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Updated subdistrict data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqUpdateSubdistrict"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully updated subdistrict",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespSubdistrict"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Subdistrict not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Delete an existing subdistrict by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Regency - Subdistrict"
-                ],
-                "summary": "Delete subdistrict",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Subdistrict UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully deleted subdistrict",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Subdistrict not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/type": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a paginated list of types with optional search and filters. Supports multiple filter values for type_code, subgroup_id, and name. Only returns non-deleted types. Requires 'api.master-data.type.view' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Jenis"
-                ],
-                "summary": "Get list of types with pagination",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number (default: 1)",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Items per page (default: 10)",
-                        "name": "per_page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Sort column (allowed: id, subgroup_id, type_code, name, created_at, updated_at)",
-                        "name": "sort_by",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Sort order: asc or desc (default: desc)",
-                        "name": "sort_order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search keyword (searches in type_code and name)",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by type codes (multiple values)",
-                        "name": "type_codes",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by subgroup IDs (multiple values, UUIDs)",
-                        "name": "subgroup_ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by group IDs (multiple values, UUIDs)",
-                        "name": "group_ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by names (multiple values)",
-                        "name": "names",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved types",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.PaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/dto.RespTypeIndex"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid query parameters",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new type with provided data. Type code is automatically generated by the system. Requires 'api.master-data.type.create' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Jenis"
-                ],
-                "summary": "Create a new type",
-                "parameters": [
-                    {
-                        "description": "Type creation data. Fields: subgroup_id (required, UUID), name (required, max 255 chars)",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqCreateType"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully created type with auto-generated type_code",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespType"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error or duplicate name in subgroup",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/type/export": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Export types to Excel file (.xlsx) with optional search and filter. Same search and filter logic as index but without pagination. Supports multiple filter values for type_code, subgroup_id, and name. Requires 'api.master-data.type.export' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                ],
-                "tags": [
-                    "Jenis"
-                ],
-                "summary": "Export types to Excel",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Search keyword (searches in type_code and name)",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by type codes (multiple values)",
-                        "name": "type_codes",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by subgroup IDs (multiple values, UUIDs)",
-                        "name": "subgroup_ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "description": "Filter by names (multiple values)",
-                        "name": "names",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Excel file (types.xlsx) with types data",
-                        "schema": {
-                            "type": "file"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid query parameters",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/type/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieve a single type by its UUID. The response includes subgroup_name to identify which sub-group this type belongs to. Only returns non-deleted types. Requires 'api.master-data.type.view' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Jenis"
-                ],
-                "summary": "Get type by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Type UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved type with subgroup_name",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespType"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Type not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Update an existing type's information. Type code cannot be updated. Requires 'api.master-data.type.update' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Jenis"
-                ],
-                "summary": "Update type",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Type UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Updated type data. Fields: subgroup_id (required, UUID), name (required, max 255 chars)",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ReqUpdateType"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully updated type",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.NonPaginationResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.RespType"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - validation error or duplicate name in subgroup",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Type not found",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Soft delete an existing type by ID. The type will be marked as deleted (deleted_at is set) but remains in the database. Requires 'api.master-data.type.delete' permission.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Jenis"
-                ],
-                "summary": "Soft delete type",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Type UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully soft deleted type",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request - invalid UUID",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - insufficient permissions",
-                        "schema": {
-                            "$ref": "#/definitions/response.NonPaginationResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Type not found",
                         "schema": {
                             "$ref": "#/definitions/response.NonPaginationResponse"
                         }
@@ -6421,6 +2532,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.ReferenceObject": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.ReqAuthUser": {
             "type": "object",
             "required": [
@@ -6489,98 +2611,48 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ReqCreateBacking": {
+        "dto.ReqCreateCourse": {
             "type": "object",
             "required": [
-                "name",
-                "type_id"
+                "description",
+                "discount_rate",
+                "price",
+                "short_description",
+                "title"
             ],
             "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "type_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.ReqCreateCity": {
-            "type": "object",
-            "required": [
-                "name",
-                "province_id"
-            ],
-            "properties": {
-                "area_code": {
-                    "type": "string",
-                    "maxLength": 50
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "province_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.ReqCreateDistrict": {
-            "type": "object",
-            "required": [
-                "city_id",
-                "name"
-            ],
-            "properties": {
-                "city_id": {
+                "description": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                }
-            }
-        },
-        "dto.ReqCreateExpedition": {
-            "type": "object",
-            "required": [
-                "expedition_name"
-            ],
-            "properties": {
-                "address": {
-                    "type": "string",
-                    "maxLength": 255
+                "discount_rate": {
+                    "type": "number"
                 },
-                "expedition_name": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "notes": {
+                "lang_id": {
                     "type": "string"
                 },
-                "phone_numbers": {
+                "level_id": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "short_description": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "thumbnailURL": {
+                    "description": "mutate from thumbnail file",
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "topic_ids": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
-                },
-                "telp_numbers": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.TelpNumberItem"
-                    }
-                }
-            }
-        },
-        "dto.ReqCreateGroup": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
                 }
             }
         },
@@ -6613,18 +2685,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ReqCreateProvince": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 100
-                }
-            }
-        },
         "dto.ReqCreateRole": {
             "type": "object",
             "required": [
@@ -6645,54 +2705,6 @@ const docTemplate = `{
                 "role_name": {
                     "type": "string",
                     "maxLength": 80
-                }
-            }
-        },
-        "dto.ReqCreateSubGroup": {
-            "type": "object",
-            "required": [
-                "groups_id",
-                "name"
-            ],
-            "properties": {
-                "groups_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                }
-            }
-        },
-        "dto.ReqCreateSubdistrict": {
-            "type": "object",
-            "required": [
-                "district_id",
-                "name"
-            ],
-            "properties": {
-                "district_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                }
-            }
-        },
-        "dto.ReqCreateType": {
-            "type": "object",
-            "required": [
-                "name",
-                "subgroup_id"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "subgroup_id": {
-                    "type": "string"
                 }
             }
         },
@@ -6794,98 +2806,52 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ReqUpdateBacking": {
+        "dto.ReqUpdateCourse": {
             "type": "object",
             "required": [
-                "name",
-                "type_id"
+                "description",
+                "discount_rate",
+                "price",
+                "short_description",
+                "title"
             ],
             "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "type_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.ReqUpdateCity": {
-            "type": "object",
-            "required": [
-                "name",
-                "province_id"
-            ],
-            "properties": {
-                "area_code": {
-                    "type": "string",
-                    "maxLength": 50
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "province_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.ReqUpdateDistrict": {
-            "type": "object",
-            "required": [
-                "city_id",
-                "name"
-            ],
-            "properties": {
-                "city_id": {
+                "description": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                }
-            }
-        },
-        "dto.ReqUpdateExpedition": {
-            "type": "object",
-            "required": [
-                "expedition_name"
-            ],
-            "properties": {
-                "address": {
-                    "type": "string",
-                    "maxLength": 255
+                "discount_rate": {
+                    "type": "number"
                 },
-                "expedition_name": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "notes": {
+                "lang_id": {
                     "type": "string"
                 },
-                "phone_numbers": {
+                "level_id": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "remove_thumbnail": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "short_description": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "thumbnailURL": {
+                    "description": "mutate from thumbnail file",
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "topic_ids": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
-                },
-                "telp_numbers": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.TelpNumberItem"
-                    }
-                }
-            }
-        },
-        "dto.ReqUpdateGroup": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
                 }
             }
         },
@@ -6944,18 +2910,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ReqUpdateProvince": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 100
-                }
-            }
-        },
         "dto.ReqUpdateRole": {
             "type": "object",
             "required": [
@@ -6976,54 +2930,6 @@ const docTemplate = `{
                 "role_name": {
                     "type": "string",
                     "maxLength": 80
-                }
-            }
-        },
-        "dto.ReqUpdateSubGroup": {
-            "type": "object",
-            "required": [
-                "groups_id",
-                "name"
-            ],
-            "properties": {
-                "groups_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                }
-            }
-        },
-        "dto.ReqUpdateSubdistrict": {
-            "type": "object",
-            "required": [
-                "district_id",
-                "name"
-            ],
-            "properties": {
-                "district_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                }
-            }
-        },
-        "dto.ReqUpdateType": {
-            "type": "object",
-            "required": [
-                "name",
-                "subgroup_id"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "subgroup_id": {
-                    "type": "string"
                 }
             }
         },
@@ -7119,313 +3025,78 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.RespBacking": {
+        "dto.RespCourse": {
             "type": "object",
             "properties": {
-                "backing_code": {
-                    "description": "omit when creating new backing",
-                    "type": "string"
-                },
                 "created_at": {
                     "type": "string"
                 },
-                "created_by": {
+                "description": {
                     "type": "string"
                 },
-                "deletable": {
-                    "type": "boolean"
+                "discount_rate": {
+                    "type": "number"
                 },
-                "groups_id": {
-                    "type": "string"
-                },
-                "groups_name": {
-                    "type": "string"
+                "discounted_price": {
+                    "type": "number"
                 },
                 "id": {
                     "type": "string"
                 },
-                "name": {
+                "lang": {
+                    "$ref": "#/definitions/dto.ReferenceObject"
+                },
+                "level": {
+                    "$ref": "#/definitions/dto.ReferenceObject"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "short_description": {
                     "type": "string"
                 },
-                "subgroup_id": {
+                "thumbnail_url": {
                     "type": "string"
                 },
-                "subgroup_name": {
+                "title": {
                     "type": "string"
                 },
-                "type_id": {
-                    "type": "string"
-                },
-                "type_name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespBackingIndex": {
-            "type": "object",
-            "properties": {
-                "backing_code": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deletable": {
-                    "type": "boolean"
-                },
-                "group_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "subgroup_name": {
-                    "type": "string"
-                },
-                "type_id": {
-                    "type": "string"
-                },
-                "type_name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespCity": {
-            "type": "object",
-            "properties": {
-                "area_code": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "province": {
-                    "$ref": "#/definitions/dto.RespProvince"
-                },
-                "province_id": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespCityAreaCode": {
-            "type": "object",
-            "properties": {
-                "area_code": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespCityIndex": {
-            "type": "object",
-            "properties": {
-                "area_code": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "province_id": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespDistrict": {
-            "type": "object",
-            "properties": {
-                "city": {
-                    "$ref": "#/definitions/dto.RespCity"
-                },
-                "city_id": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespDistrictIndex": {
-            "type": "object",
-            "properties": {
-                "city_id": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespExpedition": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "deletable": {
-                    "type": "boolean"
-                },
-                "expedition_code": {
-                    "type": "string"
-                },
-                "expedition_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "phone_numbers": {
+                "topics": {
                     "type": "array",
                     "items": {
-                        "type": "string"
-                    }
-                },
-                "telp_numbers": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.TelpNumberItem"
+                        "$ref": "#/definitions/dto.ReferenceObject"
                     }
                 },
                 "updated_at": {
                     "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
                 }
             }
         },
-        "dto.RespExpeditionIndex": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deletable": {
-                    "type": "boolean"
-                },
-                "expedition_code": {
-                    "type": "string"
-                },
-                "expedition_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
-                },
-                "telp_number": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespGroup": {
+        "dto.RespCourseIndex": {
             "type": "object",
             "properties": {
                 "created_at": {
                     "type": "string"
                 },
-                "deletable": {
-                    "description": "true if group is not used in any active sub-group",
-                    "type": "boolean"
+                "discount_rate": {
+                    "type": "number"
                 },
-                "group_code": {
-                    "description": "omit when creating new group",
-                    "type": "string"
+                "discounted_price": {
+                    "type": "number"
                 },
                 "id": {
                     "type": "string"
                 },
-                "name": {
+                "price": {
+                    "type": "number"
+                },
+                "short_description": {
                     "type": "string"
                 },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespGroupIndex": {
-            "type": "object",
-            "properties": {
-                "created_at": {
+                "thumbnail_url": {
                     "type": "string"
                 },
-                "deletable": {
-                    "description": "true if group is not used in any active sub-group",
-                    "type": "boolean"
-                },
-                "group_code": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
+                "title": {
                     "type": "string"
                 }
             }
@@ -7533,40 +3204,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.RespProvince": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespProvinceIndex": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.RespRole": {
             "type": "object",
             "properties": {
@@ -7636,180 +3273,6 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "$ref": "#/definitions/utils.NullTime"
-                }
-            }
-        },
-        "dto.RespSubGroup": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "deletable": {
-                    "type": "boolean"
-                },
-                "groups_id": {
-                    "type": "string"
-                },
-                "groups_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "subgroup_code": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespSubGroupIndex": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deletable": {
-                    "type": "boolean"
-                },
-                "groups_id": {
-                    "type": "string"
-                },
-                "groups_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "subgroup_code": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespSubdistrict": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "district": {
-                    "$ref": "#/definitions/dto.RespDistrict"
-                },
-                "district_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespSubdistrictIndex": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "district_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespType": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deletable": {
-                    "type": "boolean"
-                },
-                "group_id": {
-                    "type": "string"
-                },
-                "group_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "subgroup_id": {
-                    "type": "string"
-                },
-                "subgroup_name": {
-                    "type": "string"
-                },
-                "type_code": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.RespTypeIndex": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deletable": {
-                    "type": "boolean"
-                },
-                "group_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "subgroup_id": {
-                    "type": "string"
-                },
-                "subgroup_name": {
-                    "type": "string"
-                },
-                "type_code": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
                 }
             }
         },
@@ -7884,20 +3347,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.TelpNumberItem": {
-            "type": "object",
-            "required": [
-                "phone_number"
-            ],
-            "properties": {
-                "area_code": {
-                    "type": "string"
-                },
-                "phone_number": {
                     "type": "string"
                 }
             }

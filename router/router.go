@@ -49,37 +49,12 @@ import (
 	_roleManagementRepo "github.com/rendyfutsuybase-case-courses/modules/role_management/repository"
 	_roleManagementService "github.com/rendyfutsuybase-case-courses/modules/role_management/usecase"
 
-	_groupController "github.com/rendyfutsuybase-case-courses/modules/group/delivery/http"
-	_groupRepo "github.com/rendyfutsuybase-case-courses/modules/group/repository"
-	_groupService "github.com/rendyfutsuybase-case-courses/modules/group/usecase"
-
-	_parameterController "github.com/rendyfutsuybase-case-courses/modules/parameter/delivery/http"
-	_parameterRepo "github.com/rendyfutsuybase-case-courses/modules/parameter/repository"
-	_parameterService "github.com/rendyfutsuybase-case-courses/modules/parameter/usecase"
-
-	_regencyController "github.com/rendyfutsuybase-case-courses/modules/regency/delivery/http"
-	_regencyRepo "github.com/rendyfutsuybase-case-courses/modules/regency/repository"
-	_regencyService "github.com/rendyfutsuybase-case-courses/modules/regency/usecase"
-
-	_subGroupController "github.com/rendyfutsuybase-case-courses/modules/sub-group/delivery/http"
-	_subGroupRepo "github.com/rendyfutsuybase-case-courses/modules/sub-group/repository"
-	_subGroupService "github.com/rendyfutsuybase-case-courses/modules/sub-group/usecase"
-
-	_typeController "github.com/rendyfutsuybase-case-courses/modules/type/delivery/http"
-	_typeRepo "github.com/rendyfutsuybase-case-courses/modules/type/repository"
-	_typeService "github.com/rendyfutsuybase-case-courses/modules/type/usecase"
-
-	_expeditionController "github.com/rendyfutsuybase-case-courses/modules/expedition/delivery/http"
-	_expeditionRepo "github.com/rendyfutsuybase-case-courses/modules/expedition/repository"
-	_expeditionService "github.com/rendyfutsuybase-case-courses/modules/expedition/usecase"
-
-	_backingController "github.com/rendyfutsuybase-case-courses/modules/backing/delivery/http"
-	_backingRepo "github.com/rendyfutsuybase-case-courses/modules/backing/repository"
-	_backingService "github.com/rendyfutsuybase-case-courses/modules/backing/usecase"
-
 	_courseController "github.com/rendyfutsuybase-case-courses/modules/course/delivery/http"
 	_courseRepo "github.com/rendyfutsuybase-case-courses/modules/course/repository"
 	_courseService "github.com/rendyfutsuybase-case-courses/modules/course/usecase"
+	_parameterController "github.com/rendyfutsuybase-case-courses/modules/parameter/delivery/http"
+	_parameterRepo "github.com/rendyfutsuybase-case-courses/modules/parameter/repository"
+	_parameterService "github.com/rendyfutsuybase-case-courses/modules/parameter/usecase"
 )
 
 func InitializedRouter(gormDB *gorm.DB, redisClient *redis.Client, timeoutContext time.Duration, v *validator.Validate, nrApp *newrelic.Application) *echo.Echo {
@@ -135,21 +110,8 @@ func InitializedRouter(gormDB *gorm.DB, redisClient *redis.Client, timeoutContex
 
 	userManagementRepo := _userManagementRepo.NewUserManagementRepository(gormDB) // Using GORM for user_management
 
-	groupRepo := _groupRepo.NewGroupRepository(gormDB) // Using GORM for group
-
 	parameterRepo := _parameterRepo.NewParameterRepository(gormDB) // Using GORM for parameter
-
-	regencyRepo := _regencyRepo.NewRegencyRepository(gormDB) // Using GORM for regency
-
-	subGroupRepo := _subGroupRepo.NewSubGroupRepository(gormDB) // Using GORM for sub-group
-
-	typeRepo := _typeRepo.NewTypeRepository(gormDB) // Using GORM for type
-
-	backingRepo := _backingRepo.NewBackingRepository(gormDB) // Using GORM for backing
-
-	expeditionRepo := _expeditionRepo.NewExpeditionRepository(gormDB) // Using GORM for expedition
-
-	courseRepo := _courseRepo.NewCourseRepository(gormDB) // Using GORM for course
+	courseRepo := _courseRepo.NewCourseRepository(gormDB)          // Using GORM for course
 
 	// Middlewares ------------------------------------------------------------------------------------------------------------------------------------------------------
 	middlewareAuth := authmiddleware.NewMiddlewareAuth()
@@ -216,71 +178,11 @@ func InitializedRouter(gormDB *gorm.DB, redisClient *redis.Client, timeoutContex
 		middlewarePermission,
 	)
 
-	// group management
-	groupService := _groupService.NewGroupUsecase(groupRepo)
-	_groupController.NewGroupHandler(
-		router,
-		groupService,
-		middlewarePageRequest,
-		middlewareAuth,
-		middlewarePermission,
-	)
-
 	// parameter management
 	parameterService := _parameterService.NewParameterUsecase(parameterRepo)
 	_parameterController.NewParameterHandler(
 		router,
 		parameterService,
-		middlewarePageRequest,
-		middlewareAuth,
-		middlewarePermission,
-	)
-
-	// regency management
-	regencyService := _regencyService.NewRegencyUsecase(regencyRepo)
-	_regencyController.NewRegencyHandler(
-		router,
-		regencyService,
-		middlewarePageRequest,
-		middlewareAuth,
-		middlewarePermission,
-	)
-
-	// sub-group management
-	subGroupService := _subGroupService.NewSubGroupUsecase(subGroupRepo, groupRepo)
-	_subGroupController.NewSubGroupHandler(
-		router,
-		subGroupService,
-		middlewarePageRequest,
-		middlewareAuth,
-		middlewarePermission,
-	)
-
-	// type management
-	typeService := _typeService.NewTypeUsecase(typeRepo, subGroupRepo)
-	_typeController.NewTypeHandler(
-		router,
-		typeService,
-		middlewarePageRequest,
-		middlewareAuth,
-		middlewarePermission,
-	)
-
-	// backing management
-	backingService := _backingService.NewBackingUsecase(backingRepo, typeRepo)
-	_backingController.NewBackingHandler(
-		router,
-		backingService,
-		middlewarePageRequest,
-		middlewareAuth,
-		middlewarePermission,
-	)
-
-	// expedition management
-	expeditionService := _expeditionService.NewExpeditionUsecase(expeditionRepo)
-	_expeditionController.NewExpeditionHandler(
-		router,
-		expeditionService,
 		middlewarePageRequest,
 		middlewareAuth,
 		middlewarePermission,
