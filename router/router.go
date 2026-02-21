@@ -76,6 +76,10 @@ import (
 	_backingController "github.com/rendyfutsuy/base-go/modules/backing/delivery/http"
 	_backingRepo "github.com/rendyfutsuy/base-go/modules/backing/repository"
 	_backingService "github.com/rendyfutsuy/base-go/modules/backing/usecase"
+
+	_courseController "github.com/rendyfutsuy/base-go/modules/course/delivery/http"
+	_courseRepo "github.com/rendyfutsuy/base-go/modules/course/repository"
+	_courseService "github.com/rendyfutsuy/base-go/modules/course/usecase"
 )
 
 func InitializedRouter(gormDB *gorm.DB, redisClient *redis.Client, timeoutContext time.Duration, v *validator.Validate, nrApp *newrelic.Application) *echo.Echo {
@@ -141,6 +145,8 @@ func InitializedRouter(gormDB *gorm.DB, redisClient *redis.Client, timeoutContex
 	backingRepo := _backingRepo.NewBackingRepository(gormDB) // Using GORM for backing
 
 	expeditionRepo := _expeditionRepo.NewExpeditionRepository(gormDB) // Using GORM for expedition
+
+	courseRepo := _courseRepo.NewCourseRepository(gormDB) // Using GORM for course
 
 	// Middlewares ------------------------------------------------------------------------------------------------------------------------------------------------------
 	middlewareAuth := authmiddleware.NewMiddlewareAuth()
@@ -272,6 +278,16 @@ func InitializedRouter(gormDB *gorm.DB, redisClient *redis.Client, timeoutContex
 	_expeditionController.NewExpeditionHandler(
 		router,
 		expeditionService,
+		middlewarePageRequest,
+		middlewareAuth,
+		middlewarePermission,
+	)
+
+	// course management (public index & detail, protected create/update/delete)
+	courseService := _courseService.NewCourseUsecase(courseRepo, parameterRepo)
+	_courseController.NewCourseHandler(
+		router,
+		courseService,
 		middlewarePageRequest,
 		middlewareAuth,
 		middlewarePermission,
