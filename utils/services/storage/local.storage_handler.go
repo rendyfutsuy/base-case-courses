@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rendyfutsuy/base-go/utils"
+	"github.com/rendyfutsuybase-case-courses/utils"
 )
 
 type LocalStorage struct {
-	baseDir       string
+	baseDir        string
 	originEndpoint string
 }
 

@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuy/base-go/constants"
-	"github.com/rendyfutsuy/base-go/utils"
-	"github.com/rendyfutsuy/base-go/utils/services"
+	"github.com/rendyfutsuybase-case-courses/constants"
+	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuybase-case-courses/utils/services"
 )
 
 type HomepageData struct {

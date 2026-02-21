@@ -9,8 +9,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/models"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/models"
 	"github.com/stretchr/testify/assert"
 )
 

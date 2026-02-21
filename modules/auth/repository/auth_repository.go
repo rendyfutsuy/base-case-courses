@@ -9,12 +9,12 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"
-	"github.com/rendyfutsuy/base-go/constants"
-	models "github.com/rendyfutsuy/base-go/models"
-	"github.com/rendyfutsuy/base-go/modules/auth"
-	"github.com/rendyfutsuy/base-go/modules/auth/dto"
-	"github.com/rendyfutsuy/base-go/utils"
-	"github.com/rendyfutsuy/base-go/utils/services"
+	"github.com/rendyfutsuybase-case-courses/constants"
+	models "github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuybase-case-courses/modules/auth"
+	"github.com/rendyfutsuybase-case-courses/modules/auth/dto"
+	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuybase-case-courses/utils/services"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )

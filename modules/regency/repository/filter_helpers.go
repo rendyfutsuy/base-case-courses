@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/modules/regency/dto"
-	"github.com/rendyfutsuy/base-go/modules/regency/repository/filters"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/modules/regency/dto"
+	"github.com/rendyfutsuybase-case-courses/modules/regency/repository/filters"
 	"gorm.io/gorm"
 )
 

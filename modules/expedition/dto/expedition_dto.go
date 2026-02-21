@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/constants"
-	"github.com/rendyfutsuy/base-go/models"
+	"github.com/rendyfutsuybase-case-courses/constants"
+	"github.com/rendyfutsuybase-case-courses/models"
 )
 
 // TelpNumberItem represents telp number with area code

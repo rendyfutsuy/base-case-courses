@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/models"
-	"github.com/rendyfutsuy/base-go/modules/group/dto"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuybase-case-courses/modules/group/dto"
 )
 
 type Repository interface {

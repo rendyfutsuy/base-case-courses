@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/modules/parameter/dto"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/modules/parameter/dto"
 	"gorm.io/gorm"
 )
 

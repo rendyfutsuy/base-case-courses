@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/utils"
+	"github.com/rendyfutsuybase-case-courses/utils"
 )
 
 type PermissionGroup struct {

@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/models"
-	utilsServices "github.com/rendyfutsuy/base-go/utils/services"
+	"github.com/rendyfutsuybase-case-courses/models"
+	utilsServices "github.com/rendyfutsuybase-case-courses/utils/services"
 )
 
 type ReqCreateCourse struct {

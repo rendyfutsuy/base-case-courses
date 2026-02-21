@@ -9,7 +9,7 @@ OLD_VARIABLE_NAME=$2
 NEW_VARIABLE_NAME=$3
 
 # Define old import path and module path
-OLD_IMPORT_PATH="github.com/rendyfutsuy/base-go"
+OLD_IMPORT_PATH="github.com/rendyfutsuybase-case-courses"
 OLD_MODULE_PATH="go_base_project"
 OLD_APP_NAME="go base project"
 OLD_DB_NAME="go_base_project"

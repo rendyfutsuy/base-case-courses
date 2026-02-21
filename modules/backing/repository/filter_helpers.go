@@ -2,8 +2,8 @@ package repository
 
 import (
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/modules/backing/dto"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/modules/backing/dto"
 	"gorm.io/gorm"
 )
 

@@ -11,11 +11,11 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/models"
-	expeditionMod "github.com/rendyfutsuy/base-go/modules/expedition"
-	expeditionDto "github.com/rendyfutsuy/base-go/modules/expedition/dto"
-	"github.com/rendyfutsuy/base-go/modules/expedition/usecase"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/models"
+	expeditionMod "github.com/rendyfutsuybase-case-courses/modules/expedition"
+	expeditionDto "github.com/rendyfutsuybase-case-courses/modules/expedition/dto"
+	"github.com/rendyfutsuybase-case-courses/modules/expedition/usecase"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

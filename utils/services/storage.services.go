@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/rendyfutsuy/base-go/utils/services/storage"
+	"github.com/rendyfutsuybase-case-courses/utils/services/storage"
 	"go.uber.org/zap"
 )
 

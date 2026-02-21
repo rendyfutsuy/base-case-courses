@@ -2,7 +2,7 @@ package filters
 
 import (
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/modules/regency/dto"
+	"github.com/rendyfutsuybase-case-courses/modules/regency/dto"
 	"gorm.io/gorm"
 )
 

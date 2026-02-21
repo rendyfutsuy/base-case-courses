@@ -5,14 +5,14 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuy/base-go/constants"
-	"github.com/rendyfutsuy/base-go/helpers/middleware"
-	_reqContext "github.com/rendyfutsuy/base-go/helpers/middleware/request"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/helpers/response"
-	"github.com/rendyfutsuy/base-go/models"
-	type_module "github.com/rendyfutsuy/base-go/modules/type"
-	"github.com/rendyfutsuy/base-go/modules/type/dto"
+	"github.com/rendyfutsuybase-case-courses/constants"
+	"github.com/rendyfutsuybase-case-courses/helpers/middleware"
+	_reqContext "github.com/rendyfutsuybase-case-courses/helpers/middleware/request"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/helpers/response"
+	"github.com/rendyfutsuybase-case-courses/models"
+	type_module "github.com/rendyfutsuybase-case-courses/modules/type"
+	"github.com/rendyfutsuybase-case-courses/modules/type/dto"
 )
 
 type ResponseError struct {

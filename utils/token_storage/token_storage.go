@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/models"
+	"github.com/rendyfutsuybase-case-courses/models"
 )
 
 type RefreshTokenMeta struct {

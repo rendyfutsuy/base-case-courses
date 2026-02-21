@@ -6,9 +6,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/rendyfutsuy/base-go/constants"
-	"github.com/rendyfutsuy/base-go/helpers/response"
-	"github.com/rendyfutsuy/base-go/modules/auth/dto"
+	"github.com/rendyfutsuybase-case-courses/constants"
+	"github.com/rendyfutsuybase-case-courses/helpers/response"
+	"github.com/rendyfutsuybase-case-courses/modules/auth/dto"
 )
 
 // ResetPasswordRequest godoc

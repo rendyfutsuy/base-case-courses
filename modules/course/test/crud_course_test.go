@@ -6,11 +6,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/models"
-	courseDto "github.com/rendyfutsuy/base-go/modules/course/dto"
-	courseUsecase "github.com/rendyfutsuy/base-go/modules/course/usecase"
-	paramDto "github.com/rendyfutsuy/base-go/modules/parameter/dto"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/models"
+	courseDto "github.com/rendyfutsuybase-case-courses/modules/course/dto"
+	courseUsecase "github.com/rendyfutsuybase-case-courses/modules/course/usecase"
+	paramDto "github.com/rendyfutsuybase-case-courses/modules/parameter/dto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

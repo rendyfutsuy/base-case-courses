@@ -11,10 +11,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/models"
-	regencyDto "github.com/rendyfutsuy/base-go/modules/regency/dto"
-	"github.com/rendyfutsuy/base-go/modules/regency/usecase"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/models"
+	regencyDto "github.com/rendyfutsuybase-case-courses/modules/regency/dto"
+	"github.com/rendyfutsuybase-case-courses/modules/regency/usecase"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

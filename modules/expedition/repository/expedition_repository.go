@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/constants"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/models"
-	"github.com/rendyfutsuy/base-go/modules/expedition"
-	"github.com/rendyfutsuy/base-go/modules/expedition/dto"
-	rsearchexpedition "github.com/rendyfutsuy/base-go/modules/expedition/repository/searches"
+	"github.com/rendyfutsuybase-case-courses/constants"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuybase-case-courses/modules/expedition"
+	"github.com/rendyfutsuybase-case-courses/modules/expedition/dto"
+	rsearchexpedition "github.com/rendyfutsuybase-case-courses/modules/expedition/repository/searches"
 	"gorm.io/gorm"
 )
 

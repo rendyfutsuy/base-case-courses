@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/models"
-	"github.com/rendyfutsuy/base-go/modules/user_management/usecase"
-	"github.com/rendyfutsuy/base-go/utils/token_storage"
+	"github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuybase-case-courses/modules/user_management/usecase"
+	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
 	"github.com/stretchr/testify/mock"
 )
 

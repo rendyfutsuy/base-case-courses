@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/constants"
+	"github.com/rendyfutsuybase-case-courses/constants"
 )
 
 func SanitizeTableName(tableName string) string {

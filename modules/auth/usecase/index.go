@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/rendyfutsuy/base-go/modules/auth"
-	roleManagement "github.com/rendyfutsuy/base-go/modules/role_management"
+	"github.com/rendyfutsuybase-case-courses/modules/auth"
+	roleManagement "github.com/rendyfutsuybase-case-courses/modules/role_management"
 )
 
 type AuthClaims struct {

@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/utils"
-	utilsServices "github.com/rendyfutsuy/base-go/utils/services"
+	"github.com/rendyfutsuybase-case-courses/utils"
+	utilsServices "github.com/rendyfutsuybase-case-courses/utils/services"
 	"gorm.io/gorm"
 )
 

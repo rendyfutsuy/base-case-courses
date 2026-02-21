@@ -1,4 +1,4 @@
-module github.com/rendyfutsuy/base-go
+module github.com/rendyfutsuybase-case-courses
 
 go 1.24.0
 

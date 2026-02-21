@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"github.com/rendyfutsuy/base-go/constants"
-	"github.com/rendyfutsuy/base-go/utils"
-	"github.com/rendyfutsuy/base-go/utils/token_storage"
+	"github.com/rendyfutsuybase-case-courses/constants"
+	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
 	"golang.org/x/crypto/bcrypt"
 )
 

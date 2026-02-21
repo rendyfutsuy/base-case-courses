@@ -11,11 +11,11 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/models"
-	backingDto "github.com/rendyfutsuy/base-go/modules/backing/dto"
-	"github.com/rendyfutsuy/base-go/modules/backing/usecase"
-	typeDto "github.com/rendyfutsuy/base-go/modules/type/dto"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/models"
+	backingDto "github.com/rendyfutsuybase-case-courses/modules/backing/dto"
+	"github.com/rendyfutsuybase-case-courses/modules/backing/usecase"
+	typeDto "github.com/rendyfutsuybase-case-courses/modules/type/dto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

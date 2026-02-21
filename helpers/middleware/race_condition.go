@@ -12,8 +12,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/redis/go-redis/v9"
-	"github.com/rendyfutsuy/base-go/helpers/response"
-	"github.com/rendyfutsuy/base-go/utils"
+	"github.com/rendyfutsuybase-case-courses/helpers/response"
+	"github.com/rendyfutsuybase-case-courses/utils"
 	"go.uber.org/zap"
 )
 

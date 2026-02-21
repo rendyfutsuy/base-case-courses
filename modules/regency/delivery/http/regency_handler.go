@@ -5,13 +5,13 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuy/base-go/constants"
-	"github.com/rendyfutsuy/base-go/helpers/middleware"
-	_reqContext "github.com/rendyfutsuy/base-go/helpers/middleware/request"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/helpers/response"
-	"github.com/rendyfutsuy/base-go/modules/regency"
-	"github.com/rendyfutsuy/base-go/modules/regency/dto"
+	"github.com/rendyfutsuybase-case-courses/constants"
+	"github.com/rendyfutsuybase-case-courses/helpers/middleware"
+	_reqContext "github.com/rendyfutsuybase-case-courses/helpers/middleware/request"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/helpers/response"
+	"github.com/rendyfutsuybase-case-courses/modules/regency"
+	"github.com/rendyfutsuybase-case-courses/modules/regency/dto"
 )
 
 type ResponseError struct {

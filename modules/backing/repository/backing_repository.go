@@ -6,11 +6,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/constants"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/models"
-	"github.com/rendyfutsuy/base-go/modules/backing/dto"
-	rsearchbacking "github.com/rendyfutsuy/base-go/modules/backing/repository/searches"
+	"github.com/rendyfutsuybase-case-courses/constants"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuybase-case-courses/modules/backing/dto"
+	rsearchbacking "github.com/rendyfutsuybase-case-courses/modules/backing/repository/searches"
 	"gorm.io/gorm"
 )
 

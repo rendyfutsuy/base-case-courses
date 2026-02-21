@@ -6,13 +6,13 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuy/base-go/helpers/request"
-	"github.com/rendyfutsuy/base-go/models"
-	"github.com/rendyfutsuy/base-go/modules/course"
-	"github.com/rendyfutsuy/base-go/modules/course/dto"
-	paramMod "github.com/rendyfutsuy/base-go/modules/parameter"
-	"github.com/rendyfutsuy/base-go/utils"
-	utilsServices "github.com/rendyfutsuy/base-go/utils/services"
+	"github.com/rendyfutsuybase-case-courses/helpers/request"
+	"github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuybase-case-courses/modules/course"
+	"github.com/rendyfutsuybase-case-courses/modules/course/dto"
+	paramMod "github.com/rendyfutsuybase-case-courses/modules/parameter"
+	"github.com/rendyfutsuybase-case-courses/utils"
+	utilsServices "github.com/rendyfutsuybase-case-courses/utils/services"
 )
 
 type courseUsecase struct {

@@ -1,6 +1,6 @@
 package searches
 
-import "github.com/rendyfutsuy/base-go/helpers/request"
+import "github.com/rendyfutsuybase-case-courses/helpers/request"
 
 // initialize, value for search and map the function & variable need for it
 // for regency make new struct to handle province, city, district, subdistrict separately
