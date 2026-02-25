@@ -147,6 +147,11 @@ func (u *courseUsecase) Update(ctx context.Context, id string, req *dto.ReqUpdat
 		return nil, err
 	}
 
+	// Un-assign old relations
+	if err := u.paramRepo.RemoveParametersFromModule(ctx, "course", c.ID); err != nil {
+		return nil, err
+	}
+
 	// Re-assign relations: for simplicity, append new assignments (idempotency relies on unique checks if needed)
 	if err := u.paramRepo.AssignParametersToModule(ctx, "course", c.ID, []uuid.UUID{req.LevelID}); err != nil {
 		return nil, err
