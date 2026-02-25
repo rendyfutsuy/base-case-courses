@@ -5,11 +5,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuybase-case-courses/helpers/request"
-	"github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/modules/course"
-	"github.com/rendyfutsuybase-case-courses/modules/course/dto"
-	csearch "github.com/rendyfutsuybase-case-courses/modules/course/repository/searches"
+	"github.com/rendyfutsuy/base-case-courses/helpers/request"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/modules/course"
+	"github.com/rendyfutsuy/base-case-courses/modules/course/dto"
+	csearch "github.com/rendyfutsuy/base-case-courses/modules/course/repository/searches"
 	"gorm.io/gorm"
 )
 

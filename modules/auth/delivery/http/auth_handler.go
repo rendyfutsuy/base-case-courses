@@ -6,13 +6,13 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/helpers/middleware"
-	_reqContext "github.com/rendyfutsuybase-case-courses/helpers/middleware/request"
-	"github.com/rendyfutsuybase-case-courses/helpers/response"
-	"github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/modules/auth"
-	"github.com/rendyfutsuybase-case-courses/modules/auth/dto"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/helpers/middleware"
+	_reqContext "github.com/rendyfutsuy/base-case-courses/helpers/middleware/request"
+	"github.com/rendyfutsuy/base-case-courses/helpers/response"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/modules/auth"
+	"github.com/rendyfutsuy/base-case-courses/modules/auth/dto"
 )
 
 // GeneralResponse represent the response error struct

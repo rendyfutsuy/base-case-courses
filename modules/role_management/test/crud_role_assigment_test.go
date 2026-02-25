@@ -9,8 +9,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuybase-case-courses/models"
-	roleDto "github.com/rendyfutsuybase-case-courses/modules/role_management/dto"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	roleDto "github.com/rendyfutsuy/base-case-courses/modules/role_management/dto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

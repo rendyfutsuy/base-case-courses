@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/modules/user_management/dto"
-	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/modules/user_management/dto"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 	"github.com/xuri/excelize/v2"
 )
 

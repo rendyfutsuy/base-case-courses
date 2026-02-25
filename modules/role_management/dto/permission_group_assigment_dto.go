@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/models"
 )
 
 type RespPermissionGroupByModule struct {

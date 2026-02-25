@@ -3,8 +3,8 @@ package repository
 import (
 	"os"
 
-	role "github.com/rendyfutsuybase-case-courses/modules/role_management"
-	"github.com/rendyfutsuybase-case-courses/utils"
+	role "github.com/rendyfutsuy/base-case-courses/modules/role_management"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 	"gorm.io/gorm"
 )
 

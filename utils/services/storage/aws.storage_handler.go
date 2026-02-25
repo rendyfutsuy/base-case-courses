@@ -13,8 +13,8 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
-	aws_service "github.com/rendyfutsuybase-case-courses/helpers/aws"
-	"github.com/rendyfutsuybase-case-courses/utils"
+	aws_service "github.com/rendyfutsuy/base-case-courses/helpers/aws"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 )
 
 type S3Storage struct {

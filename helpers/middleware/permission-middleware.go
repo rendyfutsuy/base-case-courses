@@ -5,14 +5,14 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/rendyfutsuybase-case-courses/helpers/response"
-	"github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
+	"github.com/rendyfutsuy/base-case-courses/helpers/response"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/utils/token_storage"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 
-	"github.com/rendyfutsuybase-case-courses/modules/role_management"
+	"github.com/rendyfutsuy/base-case-courses/modules/role_management"
 )
 
 type IMiddlewarePermission interface {

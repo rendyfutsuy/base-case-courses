@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/redis/go-redis/v9"
-	"github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/models"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )

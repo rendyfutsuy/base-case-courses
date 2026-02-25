@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/helpers/response"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/helpers/response"
 	"github.com/xuri/excelize/v2"
 )
 

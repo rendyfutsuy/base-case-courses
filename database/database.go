@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

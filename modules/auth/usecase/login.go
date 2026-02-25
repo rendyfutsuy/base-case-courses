@@ -8,11 +8,11 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/modules/auth"
-	"github.com/rendyfutsuybase-case-courses/utils"
-	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/modules/auth"
+	"github.com/rendyfutsuy/base-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/utils/token_storage"
 	"go.uber.org/zap"
 )
 

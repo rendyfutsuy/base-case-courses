@@ -10,10 +10,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"
-	"github.com/rendyfutsuybase-case-courses/constants"
-	models "github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/modules/auth/tasks"
-	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	models "github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/modules/auth/tasks"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 	"gorm.io/gorm"
 )
 

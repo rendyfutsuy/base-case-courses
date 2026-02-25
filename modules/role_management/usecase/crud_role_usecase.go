@@ -5,12 +5,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/helpers/request"
-	"github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/modules/role_management/dto"
-	"github.com/rendyfutsuybase-case-courses/utils"
-	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/helpers/request"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/modules/role_management/dto"
+	"github.com/rendyfutsuy/base-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/utils/token_storage"
 
 	"github.com/google/uuid"
 )

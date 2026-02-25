@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/rendyfutsuybase-case-courses/helpers/request"
-	"github.com/rendyfutsuybase-case-courses/modules/parameter/dto"
+	"github.com/rendyfutsuy/base-case-courses/helpers/request"
+	"github.com/rendyfutsuy/base-case-courses/modules/parameter/dto"
 	"gorm.io/gorm"
 )
 

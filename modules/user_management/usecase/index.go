@@ -3,9 +3,9 @@ package usecase
 import (
 	"time"
 
-	auth "github.com/rendyfutsuybase-case-courses/modules/auth"
-	roleManagement "github.com/rendyfutsuybase-case-courses/modules/role_management"
-	"github.com/rendyfutsuybase-case-courses/modules/user_management"
+	auth "github.com/rendyfutsuy/base-case-courses/modules/auth"
+	roleManagement "github.com/rendyfutsuy/base-case-courses/modules/role_management"
+	"github.com/rendyfutsuy/base-case-courses/modules/user_management"
 )
 
 type userUsecase struct {

@@ -9,12 +9,12 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/lib/pq"
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/helpers/request"
-	"github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/modules/user_management/dto"
-	rsearchuser "github.com/rendyfutsuybase-case-courses/modules/user_management/repository/searches"
-	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/helpers/request"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/modules/user_management/dto"
+	rsearchuser "github.com/rendyfutsuy/base-case-courses/modules/user_management/repository/searches"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )

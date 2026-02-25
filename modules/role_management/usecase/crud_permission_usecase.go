@@ -3,9 +3,9 @@ package usecase
 import (
 	"context"
 
-	"github.com/rendyfutsuybase-case-courses/helpers/request"
-	"github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/helpers/request"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 
 	"github.com/google/uuid"
 )

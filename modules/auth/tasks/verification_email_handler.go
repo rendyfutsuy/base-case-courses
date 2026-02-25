@@ -8,8 +8,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"
-	"github.com/rendyfutsuybase-case-courses/utils"
-	"github.com/rendyfutsuybase-case-courses/utils/services"
+	"github.com/rendyfutsuy/base-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/utils/services"
 )
 
 const (

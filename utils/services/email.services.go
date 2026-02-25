@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"strconv"
 
-	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 	"gopkg.in/gomail.v2"
 )
 

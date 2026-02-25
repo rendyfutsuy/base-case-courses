@@ -3,10 +3,10 @@ package usecase
 import (
 	"time"
 
-	auth "github.com/rendyfutsuybase-case-courses/modules/auth"
-	roleManagement "github.com/rendyfutsuybase-case-courses/modules/role_management"
-	"github.com/rendyfutsuybase-case-courses/modules/user_management"
-	"github.com/rendyfutsuybase-case-courses/utils"
+	auth "github.com/rendyfutsuy/base-case-courses/modules/auth"
+	roleManagement "github.com/rendyfutsuy/base-case-courses/modules/role_management"
+	"github.com/rendyfutsuy/base-case-courses/modules/user_management"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

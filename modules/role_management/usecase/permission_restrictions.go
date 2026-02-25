@@ -3,8 +3,8 @@ package usecase
 import (
 	"strings"
 
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/models"
 )
 
 func isSuperAdminRoleName(name string) bool {

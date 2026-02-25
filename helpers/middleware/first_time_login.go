@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/helpers/response"
-	"github.com/rendyfutsuybase-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/helpers/response"
+	"github.com/rendyfutsuy/base-case-courses/models"
 )
 
 // RequireActivatedUser blocks access if current authenticated user's IsFirstTimeLogin is true

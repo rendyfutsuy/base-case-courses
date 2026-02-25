@@ -1,6 +1,6 @@
 package searches
 
-import "github.com/rendyfutsuybase-case-courses/helpers/request"
+import "github.com/rendyfutsuy/base-case-courses/helpers/request"
 
 // initialize, value for search and map the function & variable need for it
 type PermissionSearchHelper struct{ request.SearchPredefineBase }

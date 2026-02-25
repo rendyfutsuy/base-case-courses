@@ -2,7 +2,7 @@ package worker
 
 import (
 	"github.com/google/uuid"
-	"github.com/rendyfutsuybase-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/constants"
 )
 
 // Job represents a generic task to be executed by a worker.

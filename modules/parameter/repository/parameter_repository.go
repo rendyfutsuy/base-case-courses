@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuybase-case-courses/helpers/request"
-	"github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/modules/parameter/dto"
-	rsearchparam "github.com/rendyfutsuybase-case-courses/modules/parameter/repository/searches"
+	"github.com/rendyfutsuy/base-case-courses/helpers/request"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/modules/parameter/dto"
+	rsearchparam "github.com/rendyfutsuy/base-case-courses/modules/parameter/repository/searches"
 	"gorm.io/gorm"
 )
 

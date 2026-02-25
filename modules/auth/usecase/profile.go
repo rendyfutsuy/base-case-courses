@@ -8,12 +8,12 @@ import (
 	"mime/multipart"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/modules/auth/dto"
-	"github.com/rendyfutsuybase-case-courses/utils"
-	utilsServices "github.com/rendyfutsuybase-case-courses/utils/services"
-	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/modules/auth/dto"
+	"github.com/rendyfutsuy/base-case-courses/utils"
+	utilsServices "github.com/rendyfutsuy/base-case-courses/utils/services"
+	"github.com/rendyfutsuy/base-case-courses/utils/token_storage"
 	"golang.org/x/crypto/bcrypt"
 )
 

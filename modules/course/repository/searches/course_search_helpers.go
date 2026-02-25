@@ -1,6 +1,6 @@
 package searches
 
-import "github.com/rendyfutsuybase-case-courses/helpers/request"
+import "github.com/rendyfutsuy/base-case-courses/helpers/request"
 
 type CourseSearchHelper struct{ request.SearchPredefineBase }
 

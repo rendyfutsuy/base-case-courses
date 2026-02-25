@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/modules/role_management/dto"
-	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/modules/role_management/dto"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 )
 
 func (u *roleUsecase) ReAssignPermissionByGroup(ctx context.Context, roleId string, req *dto.ReqUpdatePermissionGroupAssignmentToRole) (roleRes *models.Role, err error) {

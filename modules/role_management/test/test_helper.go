@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuybase-case-courses/models"
-	"github.com/rendyfutsuybase-case-courses/modules/role_management/usecase"
-	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	"github.com/rendyfutsuy/base-case-courses/modules/role_management/usecase"
+	"github.com/rendyfutsuy/base-case-courses/utils/token_storage"
 	"github.com/stretchr/testify/mock"
 )
 

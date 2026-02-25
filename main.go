@@ -9,11 +9,11 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/redis/go-redis/v9"
-	"github.com/rendyfutsuybase-case-courses/database"
-	"github.com/rendyfutsuybase-case-courses/router"
-	"github.com/rendyfutsuybase-case-courses/utils"
-	utilsServices "github.com/rendyfutsuybase-case-courses/utils/services"
-	"github.com/rendyfutsuybase-case-courses/utils/token_storage"
+	"github.com/rendyfutsuy/base-case-courses/database"
+	"github.com/rendyfutsuy/base-case-courses/router"
+	"github.com/rendyfutsuy/base-case-courses/utils"
+	utilsServices "github.com/rendyfutsuy/base-case-courses/utils/services"
+	"github.com/rendyfutsuy/base-case-courses/utils/token_storage"
 	"gorm.io/gorm"
 )
 

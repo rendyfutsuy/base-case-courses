@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 )
 
 type LocalStorage struct {

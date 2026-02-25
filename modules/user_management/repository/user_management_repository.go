@@ -3,8 +3,8 @@ package repository
 import (
 	"os"
 
-	user "github.com/rendyfutsuybase-case-courses/modules/user_management"
-	"github.com/rendyfutsuybase-case-courses/utils"
+	user "github.com/rendyfutsuy/base-case-courses/modules/user_management"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 	"gorm.io/gorm"
 )
 

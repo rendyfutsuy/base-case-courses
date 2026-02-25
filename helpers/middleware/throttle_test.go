@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 	"github.com/stretchr/testify/assert"
 )
 

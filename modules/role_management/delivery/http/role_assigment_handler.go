@@ -5,9 +5,9 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/helpers/response"
-	"github.com/rendyfutsuybase-case-courses/modules/role_management/dto"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/helpers/response"
+	"github.com/rendyfutsuy/base-case-courses/modules/role_management/dto"
 )
 
 // role scope

@@ -5,13 +5,13 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/helpers/middleware"
-	_reqContext "github.com/rendyfutsuybase-case-courses/helpers/middleware/request"
-	"github.com/rendyfutsuybase-case-courses/helpers/request"
-	"github.com/rendyfutsuybase-case-courses/helpers/response"
-	"github.com/rendyfutsuybase-case-courses/modules/parameter"
-	"github.com/rendyfutsuybase-case-courses/modules/parameter/dto"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/helpers/middleware"
+	_reqContext "github.com/rendyfutsuy/base-case-courses/helpers/middleware/request"
+	"github.com/rendyfutsuy/base-case-courses/helpers/request"
+	"github.com/rendyfutsuy/base-case-courses/helpers/response"
+	"github.com/rendyfutsuy/base-case-courses/modules/parameter"
+	"github.com/rendyfutsuy/base-case-courses/modules/parameter/dto"
 )
 
 type ResponseError struct {

@@ -3,8 +3,8 @@ package usecase
 import (
 	"time"
 
-	"github.com/rendyfutsuybase-case-courses/modules/auth"
-	"github.com/rendyfutsuybase-case-courses/modules/role_management"
+	"github.com/rendyfutsuy/base-case-courses/modules/auth"
+	"github.com/rendyfutsuy/base-case-courses/modules/role_management"
 )
 
 type roleUsecase struct {

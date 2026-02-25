@@ -7,12 +7,12 @@ import (
 	"strconv"
 
 	"github.com/google/uuid"
-	"github.com/rendyfutsuybase-case-courses/constants"
-	"github.com/rendyfutsuybase-case-courses/helpers/request"
-	"github.com/rendyfutsuybase-case-courses/models"
-	mod "github.com/rendyfutsuybase-case-courses/modules/parameter"
-	"github.com/rendyfutsuybase-case-courses/modules/parameter/dto"
-	"github.com/rendyfutsuybase-case-courses/utils"
+	"github.com/rendyfutsuy/base-case-courses/constants"
+	"github.com/rendyfutsuy/base-case-courses/helpers/request"
+	"github.com/rendyfutsuy/base-case-courses/models"
+	mod "github.com/rendyfutsuy/base-case-courses/modules/parameter"
+	"github.com/rendyfutsuy/base-case-courses/modules/parameter/dto"
+	"github.com/rendyfutsuy/base-case-courses/utils"
 	"github.com/xuri/excelize/v2"
 	"gorm.io/gorm"
 )
